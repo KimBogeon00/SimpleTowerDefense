@@ -14780,6 +14780,7 @@ MonoBehaviour:
   muzzlePrefab: {fileID: 1072413172352700, guid: e0de14d95a9f81a4991fc94d9985dc88, type: 3}
   hitPrefab: {fileID: 1678266536710752, guid: e9f2eebd4297d16468c064220662eea2, type: 3}
   trails: []
+  offset: {x: 0, y: 0, z: 0}
   rotateToMouse: {fileID: 0}
 --- !u!199 &199924835779171580
 ParticleSystemRenderer:
@@ -19626,7 +19627,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

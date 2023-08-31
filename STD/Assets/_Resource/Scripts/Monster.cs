@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Monster : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Monster : MonoBehaviour
 
 
     public float mobHp;
+    public float mobCurHp;
     public float mobSpeed;
 
     [Space(20f)]
@@ -29,19 +31,27 @@ public class Monster : MonoBehaviour
 
 
     /// <summary> 맵에 있는 웨이포인트를 저장하기 위한 변수. </summary>
-    public GameObject[] mobWayPoints = new GameObject[21];
+    public GameObject[] mobWayPoints = new GameObject[29];
+
+    //[SerializeField] GameObject mobParent;
 
     [Space(20f)]
     [Header(" [ Others ]")]
-    [SerializeField] Vector3 direction;
-    [SerializeField] Quaternion rotation;
+    Vector3 direction;
+    Quaternion rotation;
+    [SerializeField] Vector3 mobLookPos; // 몬스터가 바라볼 좌표.
+    [SerializeField] Slider mobHpSlider; // 몬스터 hp바 슬라이더.
 
 
     // Start is called before the first frame update
     void Start()
     {
         mobMapWayPointParent = GameObject.FindWithTag("MapWayPointParent"); // MapWayPointParent 테그를 찾아서 mobMapWayPointParent 에 대입.
-        mobCurWayPoint = 0;
+        mobCurWayPoint = 0; // 웨이포인트 0번 부터 시작.
+        mobCurHp = mobHp; // hp 초기화
+        mobHpSlider.maxValue = mobHp;
+
+
         for (int i = 0; i < mobMapWayPointParent.transform.childCount; i++) // mobMapWayPointParent 의 자식 웨이포인트들을 모두 mobWayPoints에 저장한다.
         {
             mobWayPoints[i] = mobMapWayPointParent.transform.GetChild(i).gameObject;
@@ -53,10 +63,19 @@ public class Monster : MonoBehaviour
 
     void Update()
     {
+
+        // 몬스터가 알아서 이동할수있게 해줌.
         this.transform.position = Vector3.MoveTowards(this.transform.position, mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position, mobSpeed * Time.deltaTime);
-        // Quaternion a = Quaternion.LookRotation(mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position, transform.up);
-        // this.transform.rotation = Quaternion.Slerp(transform.rotation, a, 0.2f);
-        this.transform.rotation = Quaternion.LookRotation((mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position - this.transform.position));
+        // 몬스터가 이동할때 목표물을 바라보면서 이동할수있게 해줌.
+        mobLookPos = new Vector3((mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position).x, this.transform.position.y, (mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position).z);
+
+        transform.LookAt(mobLookPos);
+        mobHpSlider.value = mobCurHp;
+
+        if (mobCurHp <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider col)
@@ -67,7 +86,11 @@ public class Monster : MonoBehaviour
             {
                 if (mobMoveCheck == false)
                 {
-                    StartCoroutine("MonsterMoveWait", 0.15f);
+                    if (mobWayPointSave[mobCurWayPoint] == 28)
+                    {
+                        Destroy(this.gameObject);
+                    }
+                    StartCoroutine("MonsterMoveWait", 0.1f);
                     mobMoveCheck = true;
                 }
             }

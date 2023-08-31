@@ -35,7 +35,7 @@ public class ProjectileMoveScript : MonoBehaviour
 
     private Vector3 startPos;
     private float speedRandomness;
-    private Vector3 offset;
+    [SerializeField] Vector3 offset;
     private bool collided;
     private Rigidbody rb;
     public Monster rotateToMouse;
@@ -47,30 +47,30 @@ public class ProjectileMoveScript : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         //used to create a radius for the accuracy and have a very unique randomness
-        if (accuracy != 100)
-        {
-            accuracy = 1 - (accuracy / 100);
+        // if (accuracy != 100)
+        // {
+        //     accuracy = 1 - (accuracy / 100);
 
-            for (int i = 0; i < 2; i++)
-            {
-                var val = 1 * Random.Range(-accuracy, accuracy);
-                var index = Random.Range(0, 2);
-                if (i == 0)
-                {
-                    if (index == 0)
-                        offset = new Vector3(0, -val, 0);
-                    else
-                        offset = new Vector3(0, val, 0);
-                }
-                else
-                {
-                    if (index == 0)
-                        offset = new Vector3(0, offset.y, -val);
-                    else
-                        offset = new Vector3(0, offset.y, val);
-                }
-            }
-        }
+        //     for (int i = 0; i < 2; i++)
+        //     {
+        //         var val = 1 * Random.Range(-accuracy, accuracy);
+        //         var index = Random.Range(0, 2);
+        //         if (i == 0)
+        //         {
+        //             if (index == 0)
+        //                 offset = new Vector3(0, -val, 0);
+        //             else
+        //                 offset = new Vector3(0, val, 0);
+        //         }
+        //         else
+        //         {
+        //             if (index == 0)
+        //                 offset = new Vector3(0, offset.y, -val);
+        //             else
+        //                 offset = new Vector3(0, offset.y, val);
+        //         }
+        //     }
+        // }
 
         if (muzzlePrefab != null)
         {
@@ -96,8 +96,18 @@ public class ProjectileMoveScript : MonoBehaviour
         if (speed != 0 && rb != null)
             rb.position += (transform.forward + offset) * (speed * Time.deltaTime);
     }
+    void update()
+    {
+        if (rotateToMouse == null)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
-    void OnCollisionEnter(Collision co)
+    // private void OnTriggerEnter(Collider co) {
+
+    // }
+    private void OnTriggerEnter(Collider co)
     {
         if (co.gameObject.CompareTag("Monster"))
         {
@@ -124,13 +134,13 @@ public class ProjectileMoveScript : MonoBehaviour
                     speed = 0;
                     GetComponent<Rigidbody>().isKinematic = true;
 
-                    ContactPoint contact = co.contacts[0];
-                    Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
-                    Vector3 pos = contact.point;
+                    // ContactPoint contact = co.contacts[0];
+                    // Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
+                    // Vector3 pos = contact.point;
 
                     if (hitPrefab != null)
                     {
-                        var hitVFX = Instantiate(hitPrefab, pos, rot) as GameObject;
+                        var hitVFX = Instantiate(hitPrefab, target.transform.position, Quaternion.identity) as GameObject;
 
                         var ps = hitVFX.GetComponent<ParticleSystem>();
                         if (ps == null)
@@ -145,14 +155,14 @@ public class ProjectileMoveScript : MonoBehaviour
                     StartCoroutine(DestroyParticle(0f));
                 }
             }
-            else
-            {
-                rb.useGravity = true;
-                rb.drag = 0.5f;
-                ContactPoint contact = co.contacts[0];
-                rb.AddForce(Vector3.Reflect((contact.point - startPos).normalized, contact.normal) * bounceForce, ForceMode.Impulse);
-                Destroy(this);
-            }
+            // else
+            // {
+            //     rb.useGravity = true;
+            //     rb.drag = 0.5f;
+            //     ContactPoint contact = co.contacts[0];
+            //     rb.AddForce(Vector3.Reflect((contact.point - startPos).normalized, contact.normal) * bounceForce, ForceMode.Impulse);
+            //     Destroy(this);
+            // }
         }
 
     }

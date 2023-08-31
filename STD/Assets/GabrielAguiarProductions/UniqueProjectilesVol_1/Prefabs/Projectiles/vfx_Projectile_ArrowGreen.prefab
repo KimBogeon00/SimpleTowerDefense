@@ -208,6 +208,7 @@ MonoBehaviour:
   hitPrefab: {fileID: 1735349400919506, guid: 73a45666000e9ab44a46a4a4da5ff8f1, type: 3}
   trails:
   - {fileID: 1048663460839562}
+  offset: {x: 0, y: 0, z: 0}
   rotateToMouse: {fileID: 0}
 --- !u!199 &199073291066996958
 ParticleSystemRenderer:
@@ -5117,7 +5118,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

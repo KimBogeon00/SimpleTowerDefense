@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject gmNodeSpriteParent;
     /// <summary> 맵에 있는 노드를 저장하기 위한 변수. </summary>
     public GameObject[] gmMapNodes = new GameObject[45];
+    public GameObject[] gmNodeType;
     /// <summary> 노드가 선택될때 생성될 이미지. </summary>
     [SerializeField] GameObject gmSelectSprite;
     /// <summary> 노드 선택 이미지를 가로로 눕히기 위한 변수. </summary>
@@ -45,6 +46,11 @@ public class GameManager : MonoBehaviour
         {
             gmMapNodes[i] = gmMapNodesParent.transform.GetChild(i).gameObject;
         }
+
+        for (int i = 0; i < 16; i++)
+        {
+            GmCreateNodeTile(i, Random.Range(0, 4));
+        }
     }
 
     // Update is called once per frame
@@ -66,5 +72,17 @@ public class GameManager : MonoBehaviour
 
         GameObject nodesprite = Instantiate(gmSelectSprite, gmMapNodes[gmCurSelectNodeIndex].transform.position, gmSelectSpriteQuaternion) as GameObject;
         nodesprite.transform.SetParent(gmNodeSpriteParent.transform);
+    }
+
+    /// <summary> 
+    /// 노드를 생성하는 함수.
+    ///</summary>
+    /// <param name="nodeindex"> 노드 Index 값. </param>
+    /// <param name="nodetype"> 노드 타일의 종류. </param>
+    public void GmCreateNodeTile(int nodeindex, int nodetype)
+    {
+        Vector3 nodepos = new Vector3(gmMapNodes[nodeindex].transform.position.x, gmMapNodes[nodeindex].transform.position.y - 2f, gmMapNodes[nodeindex].transform.position.z);
+        GameObject nodestile = Instantiate(gmNodeType[nodetype], nodepos, Quaternion.identity) as GameObject;
+        nodestile.transform.SetParent(gmMapNodes[nodeindex].transform);
     }
 }

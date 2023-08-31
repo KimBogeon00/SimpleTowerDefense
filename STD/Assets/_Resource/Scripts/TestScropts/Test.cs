@@ -9,6 +9,9 @@ public class Test : MonoBehaviour
     public GameObject[] Obj = new GameObject[10];
     public RotateToMouseScript rotateToMouses;
     Vector3 m_vecMouseDownPos;
+
+    public GameObject dasd;
+    public GameObject dasdpos;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,10 +51,6 @@ public class Test : MonoBehaviour
                     GameManager.gmInstance.gmCurSelectNodeIndex = hit.collider.transform.parent.GetComponent<Node>().ndNodeIndex;
                     GameManager.gmInstance.GmCreateSelctSprite();
                 }
-
-
-                Debug.Log(hit.collider.name);
-
                 // // 오브젝트 별로 코드를 작성할 수 있습니다.
                 // if (hit.collider.name == "Cube")
                 //     Debug.Log("Cube Hit");
@@ -71,5 +70,10 @@ public class Test : MonoBehaviour
     {
         GameObject a = Instantiate(Obj[Random.Range(0, 10)], t.transform.position, Quaternion.identity) as GameObject;
         a.gameObject.GetComponent<ProjectileMoveScript>().SetTargets(Target, Target.GetComponent<Monster>());
+    }
+
+    public void ba()
+    {
+        Instantiate(dasd, dasdpos.transform.position, Quaternion.identity);
     }
 }

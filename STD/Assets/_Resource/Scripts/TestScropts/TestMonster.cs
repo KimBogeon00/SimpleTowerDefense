@@ -9,6 +9,9 @@ public class TestMonster : MonoBehaviour
     public float speed;
     public int tmCurPoint;
 
+    public GameObject dasd;
+    public GameObject dasdpos;
+
     public bool a;
     // Start is called before the first frame update
     void Start()
@@ -35,6 +38,11 @@ public class TestMonster : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ba()
+    {
+        Instantiate(dasd, dasdpos.transform.position, Quaternion.identity);
     }
 
     IEnumerator Wait()

@@ -154,7 +154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4517809171266662}
-  - component: {fileID: 114101770064945952}
+  - component: {fileID: -7236605858948280890}
   - component: {fileID: 199073291066996958}
   - component: {fileID: 198007904117522096}
   - component: {fileID: 65932595672012692}
@@ -185,7 +185,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114101770064945952
+--- !u!114 &-7236605858948280890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,20 +194,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1170744857039610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12ba759cd568c0e47a7018ab70867a0d, type: 3}
+  m_Script: {fileID: 11500000, guid: 67ac713a92304ed4e83d1985045fde6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletAtk: 0
   rotate: 0
   rotateAmount: 45
   bounce: 0
   bounceForce: 10
   speed: 45
-  accuracy: 95
   fireRate: 4
   muzzlePrefab: {fileID: 1752905781611240, guid: a150ddd267ffc1b428ae91d94b828b02, type: 3}
   hitPrefab: {fileID: 1735349400919506, guid: a17580581e360e74db460cc3d5dc0396, type: 3}
   trails:
   - {fileID: 1048663460839562}
+  offset: {x: 0, y: 0.2, z: 0}
   rotateToMouse: {fileID: 0}
 --- !u!199 &199073291066996958
 ParticleSystemRenderer:
@@ -231,7 +232,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 692dfdefcd910164cbc23e29df21b0ef, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5117,7 +5117,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -9940,7 +9940,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 692dfdefcd910164cbc23e29df21b0ef, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14781,7 +14780,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 692dfdefcd910164cbc23e29df21b0ef, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19707,7 +19705,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 761fcaf3853386b4c80234bc48bdd122, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

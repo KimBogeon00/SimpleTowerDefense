@@ -9764,6 +9764,7 @@ MonoBehaviour:
   - {fileID: 1508650068779752}
   - {fileID: 1334876880979106}
   - {fileID: 1399422420123134}
+  offset: {x: 0, y: 0, z: 0}
   rotateToMouse: {fileID: 0}
 --- !u!65 &65349250874573500
 BoxCollider:
@@ -9780,7 +9781,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
