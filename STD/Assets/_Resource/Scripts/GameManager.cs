@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     /// <summary> 노드 선택 이미지를 가로로 눕히기 위한 변수. </summary>
     [SerializeField] Quaternion gmSelectSpriteQuaternion;
 
+    /// <summary> 생성한 노드 숫자를 저장하는 list 이다 중복 방지하기 위함. </summary>
+    List<int> random = new List<int>();
 
     // Start is called before the first frame update
     void Start()
@@ -47,10 +49,12 @@ public class GameManager : MonoBehaviour
             gmMapNodes[i] = gmMapNodesParent.transform.GetChild(i).gameObject;
         }
 
-        for (int i = 0; i < 16; i++)
-        {
-            GmCreateNodeTile(i, Random.Range(0, 4));
-        }
+        GmCreateNodeNumber(8, 36);
+        StartCoroutine(GmCreateNode(0, 0.25f));
+        // for (int i = 0; i < random.Count; i++)
+        // {
+        //     GmCreateNodeTile(random[i], Random.Range(0, 4));
+        // }
     }
 
     // Update is called once per frame
@@ -85,4 +89,50 @@ public class GameManager : MonoBehaviour
         GameObject nodestile = Instantiate(gmNodeType[nodetype], nodepos, Quaternion.identity) as GameObject;
         nodestile.transform.SetParent(gmMapNodes[nodeindex].transform);
     }
+
+    public void GmCreateNodeNumber(int nodecount, int maxnodecount)
+    {
+        for (int i = 0; i < nodecount; i++)
+        {
+            int num = Random.Range(0, maxnodecount);
+
+            while (true)
+            {
+                if (random.Contains(num))
+                {
+                    num = Random.Range(0, maxnodecount);
+                }
+                else
+                {
+                    random.Add(num);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void testb()
+    {
+        int nums = random.Count;
+        GmCreateNodeNumber(4, 36);
+        StartCoroutine(GmCreateNode(nums, 0.65f));
+
+        // for (int i = nums; i < random.Count; i++)
+        // {
+        //     GmCreateNodeTile(random[i], Random.Range(0, 4));
+        // }
+    }
+
+    IEnumerator GmCreateNode(int min, float wait)
+    {
+        for (int i = min; i < random.Count; i++)
+        {
+            GmCreateNodeTile(random[i], Random.Range(0, 4));
+            Debug.Log(i);
+            yield return new WaitForSecondsRealtime(wait);
+        }
+
+        yield return null;
+    }
+
 }

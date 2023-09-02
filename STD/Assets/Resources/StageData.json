@@ -1,0 +1,20 @@
+{
+    "stage" : [
+        {
+            "stageMonsterCount":30,
+            "stageSpawnMonster" : 30,
+            "stageWeightI" : 1,
+            "stageWeightII" : 2,
+            "stageWeightIII" : 3
+        },
+        {
+            "stageMonsterCount":60,
+            "stageSpawnMonster" : 60,
+            "stageWeightI" : 10,
+            "stageWeightII" : 20,
+            "stageWeightIII" : 30
+        }
+    ]
+    
+    
+}
