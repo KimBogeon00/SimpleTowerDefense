@@ -20,8 +20,7 @@ public class Tower : MonoBehaviour
     /// <para>10 : Water, </para>
     /// <para>11 : Wind. </para>
     ///</summary>
-    [Tooltip("0 : Darkness, 1 : Flame, 2 : Heart, 3 : Ice, 4 : Leaves, 5 : Light, 6 : Lightning, 7 : Moon, 8 : Soil, 9 : Sun, 10 : Water, 11 : Wind")]
-    public int twrIdentity; // 타워 속성
+
     [Space(20f)]
     [Header(" [ Float ]")]
     public float twrAtk; // 타워 공격력 기본값.
@@ -43,6 +42,9 @@ public class Tower : MonoBehaviour
     // [Space(20f)]
     [Header(" [ Others ]")]
     public LayerMask twrLayermask;
+
+    [Tooltip("0 : Darkness, 1 : Flame, 2 : Heart, 3 : Ice, 4 : Leaves, 5 : Light, 6 : Lightning, 7 : Moon, 8 : Soil, 9 : Sun, 10 : Water, 11 : Wind")]
+    public List<int> twrIdentity = new List<int>(); // 타워 속성
     // Start is called before the first frame update
     void Start()
     {
@@ -58,12 +60,8 @@ public class Tower : MonoBehaviour
 
         if (twrCloseTarget != null && twrAtkCoolTimeCheck == false)
         {
+            twrAtkCoolTimeCheck = true;
             StartCoroutine(TowerAttackDelay(twrCurAtkCoolTime, 0));
-        }
-
-        if (twrCloseTarget == null)
-        {
-            twrAtkCoolTimeCheck = false;
         }
 
 
@@ -107,7 +105,6 @@ public class Tower : MonoBehaviour
             twrCloseTarget = null;
         }
         GameObject shortestTarget = null;
-        Debug.Log("ㅁ" + cols);
 
         if (cols.Length > 0)
         {
@@ -134,16 +131,33 @@ public class Tower : MonoBehaviour
             GameObject twrbullets = Instantiate(twrBullet[bulletnum], twrAtkPoint.transform.position, Quaternion.identity) as GameObject;
             twrbullets.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
             twrbullets.GetComponent<Bullet>().bulletAtk = twrCurAtk;
+            twrbullets.GetComponent<Bullet>().identity = twrIdentity;
         }
+    }
+
+    public void NodeIdentityI()
+    {
 
     }
+    public void NodeIdentityII()
+    {
+
+    }
+    public void NodeIdentityIII()
+    {
+
+    }
+    public void NodeIdentityIV()
+    {
+
+    }
+
 
     /// <summary> 타워가 공격하기 위한 코루틴.. </summary>
     /// <param name="delay"> 타워의 공격속도 , 딜레이로 사용함. </param>
     /// <param name="bulletnum"> 어떤 총알을 사용할것인지 . ex) 0, 1, 2... </param>
     IEnumerator TowerAttackDelay(float delay, int bulletnum)
     {
-        twrAtkCoolTimeCheck = true;
         yield return new WaitForSecondsRealtime(delay);
         TowerAttack(bulletnum);
         twrAtkCoolTimeCheck = false;

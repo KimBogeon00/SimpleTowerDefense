@@ -24,6 +24,9 @@ public class Bullet : MonoBehaviour
     public Monster rotateToMouse;
     private GameObject target;
 
+
+    public List<int> identity = new List<int>();
+
     void Start()
     {
         startPos = transform.position;
@@ -43,7 +46,7 @@ public class Bullet : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject, 10.0f);
+        Destroy(this.gameObject, 5.0f);
     }
 
     void FixedUpdate()
@@ -59,9 +62,8 @@ public class Bullet : MonoBehaviour
     }
     void update()
     {
-        if (rotateToMouse == null)
+        if (rotateToMouse == null || target == null)
         {
-
             Destroy(this.gameObject);
         }
     }
@@ -70,7 +72,7 @@ public class Bullet : MonoBehaviour
     {
         if (co.gameObject.CompareTag("Monster"))
         {
-            co.GetComponent<Monster>().mobCurHp -= bulletAtk;
+            co.GetComponent<Monster>().MonsterHit(bulletAtk, identity);
             if (!bounce)
             {
                 if (co.gameObject.tag != "Bullet" && !collided)

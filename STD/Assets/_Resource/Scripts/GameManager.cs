@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [Header(" [ Int ]")]
     public int gmCurSelectNodeIndex;
 
+
     /// <summary> 노드 부모를 저장하기 위한 변수. </summary>
     [Space(20f)]
     [Header(" [ GameObject ]")]
@@ -128,7 +129,7 @@ public class GameManager : MonoBehaviour
         for (int i = min; i < random.Count; i++)
         {
             GmCreateNodeTile(random[i], Random.Range(0, 4));
-            Debug.Log(i);
+            //Debug.Log(i);
             yield return new WaitForSecondsRealtime(wait);
         }
 

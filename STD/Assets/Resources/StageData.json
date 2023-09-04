@@ -1,20 +1,49 @@
 {
-    "stage" : [
+    "stages" :[
         {
-            "stageMonsterCount":30,
-            "stageSpawnMonster" : 30,
-            "stageWeightI" : 1,
-            "stageWeightII" : 2,
-            "stageWeightIII" : 3
+            "stageIndex" : 0
         },
         {
-            "stageMonsterCount":60,
-            "stageSpawnMonster" : 60,
-            "stageWeightI" : 10,
-            "stageWeightII" : 20,
-            "stageWeightIII" : 30
+            "stageIndex" : 1,
+            "stageMonsterHp" : 30.3,
+            "stageMonsterSpeed" : 7.5,
+            "stageMonsterCount":10,
+            "stageMonsterCountTypeI":8,
+            "stageMonsterCountTypeII":1,
+            "stageMonsterCountTypeIII":1,
+            "stageSpawnMonster":[0],
+            "stageWeightI" : 900,
+            "stageWeightII" : 500,
+            "stageWeightIII" : 100 
+        },
+        {
+            "stageIndex" : 2,
+            "stageMonsterHp" : 30.6,
+            "stageMonsterSpeed" : 7.5,
+            "stageMonsterCount":10,
+            "stageMonsterCountTypeI":8,
+            "stageMonsterCountTypeII":1,
+            "stageMonsterCountTypeIII":1,
+            "stageSpawnMonster":[0],
+            "stageWeightI" : 900,
+            "stageWeightII" : 700,
+            "stageWeightIII" : 300 
+        },
+        {
+            "stageIndex" : 3,
+            "stageMonsterHp" : 30.9,
+            "stageMonsterSpeed" : 7.5,
+            "stageMonsterCount":10,
+            "stageMonsterCountTypeI":8,
+            "stageMonsterCountTypeII":1,
+            "stageMonsterCountTypeIII":1,
+            "stageSpawnMonster":[0],
+            "stageWeightI" : 900,
+            "stageWeightII" : 100,
+            "stageWeightIII" : 800 
         }
-    ]
-    
+        
+
+    ] 
     
 }

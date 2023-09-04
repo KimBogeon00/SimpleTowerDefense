@@ -99,7 +99,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   twrLevel: 0
-  twrIdentity: 0
   twrAtk: 5
   twrCurAtk: 0
   twrAtkCoolTime: 0.8
@@ -116,6 +115,7 @@ MonoBehaviour:
   twrLayermask:
     serializedVersion: 2
     m_Bits: 32768
+  twrIdentity: 00000000010000000200000003000000040000000500000006000000070000000800000009000000
 --- !u!135 &7921239958236556794
 SphereCollider:
   m_ObjectHideFlags: 0
