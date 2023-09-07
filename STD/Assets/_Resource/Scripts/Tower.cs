@@ -29,6 +29,12 @@ public class Tower : MonoBehaviour
     public float twrCurAtkCoolTime; // 타워 공격 쿨타임 현재값.
     public float twrRange; // 타워 사거리 기본값.
     public float twrCurRange; // 타워 사거리 현재값.
+    public float twrCurExp;
+    public float twrMaxExp;
+    public float[] twrNeedExp = new float[11];
+    public float twrBuyGold;
+    public float twrUpgradeGold;
+    public float twrSellGold;
     [Space(20f)]
     [Header(" [ Bool ]")]
     [SerializeField] bool twrAtkCoolTimeCheck; // 타워 공격 쿨타임 체크.
