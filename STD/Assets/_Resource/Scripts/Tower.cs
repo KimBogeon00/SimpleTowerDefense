@@ -6,6 +6,7 @@ public class Tower : MonoBehaviour
 {
     [Header(" [ Int ]")]
     public int twrLevel; // 타워 레벨
+    public int twrUpgradeLevel;
     /// <summary> 
     /// <para>0 : Darkness, </para>
     /// <para>1 : Flame, </para>

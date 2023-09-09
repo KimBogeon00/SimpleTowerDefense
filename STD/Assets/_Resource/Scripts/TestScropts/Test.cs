@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
+    public GameObject ttt;
     public GameObject t;
     public GameObject Target;
     public GameObject[] Obj = new GameObject[10];
@@ -50,6 +51,10 @@ public class Test : MonoBehaviour
                     Debug.Log("a");
                     GameManager.gmInstance.gmCurSelectNodeIndex = hit.collider.transform.parent.GetComponent<Node>().ndNodeIndex;
                     GameManager.gmInstance.GmCreateSelctSprite();
+                    if (!ttt.activeSelf && hit.collider.transform.parent.GetComponent<Node>().ndCurTower)
+                    {
+                        ttt.SetActive(true);
+                    }
                 }
                 // // 오브젝트 별로 코드를 작성할 수 있습니다.
                 // if (hit.collider.name == "Cube")

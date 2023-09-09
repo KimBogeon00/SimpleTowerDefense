@@ -168,15 +168,15 @@ public class Monster : MonoBehaviour
                     Debug.Log("----- [ 1-1 ] 플레이어 일반 공격, : " + atk + " 몬스터 체력 : " + mobCurHp);
                     break;
                 case 1:
-                    mobCurHp -= Mathf.Floor((atk * 1.1f) * 100) / 100; // 데미지 10 % 감소
+                    mobCurHp -= Mathf.Floor((atk * 1.1f) * 100) / 100; // 데미지 10 % 증가
                     Debug.Log("----- [ 2 ] 데미지 증가 I , : " + Mathf.Floor((atk * 1.1f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
                     break;
                 case 2:
-                    mobCurHp -= Mathf.Floor((atk * 1.2f) * 100) / 100; // 데미지 25 % 감소
+                    mobCurHp -= Mathf.Floor((atk * 1.2f) * 100) / 100; // 데미지 20 % 증가
                     Debug.Log("----- [ 3 ] 데미지 증가 II , : " + Mathf.Floor((atk * 1.2f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
                     break;
                 case 3:
-                    mobCurHp -= Mathf.Floor((atk * 1.3f) * 100) / 100; // 데미지 50 % 감소
+                    mobCurHp -= Mathf.Floor((atk * 1.3f) * 100) / 100; // 데미지 30 % 증가
                     Debug.Log("----- [ 4 ] 데미지 증가 III , : " + Mathf.Floor((atk * 1.3f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
                     break;
                 default:

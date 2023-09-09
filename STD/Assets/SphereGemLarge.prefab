@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 7301583409734627529}
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6516427124261794174
 MeshFilter:
@@ -98,13 +98,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c9cd8320cb3d984695d64cf8e5409a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  twrLevel: 0
+  twrLevel: 5
+  twrUpgradeLevel: 2
   twrAtk: 5
-  twrCurAtk: 0
+  twrCurAtk: 5
   twrAtkCoolTime: 0.8
   twrCurAtkCoolTime: 0.8
   twrRange: 15
   twrCurRange: 15
+  twrCurExp: 5
+  twrMaxExp: 50
+  twrNeedExp:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  twrBuyGold: 200
+  twrUpgradeGold: 500
+  twrSellGold: 100
   twrAtkCoolTimeCheck: 0
   twrAtkPoint: {fileID: 8482359102098711394}
   twrCloseTarget: {fileID: 0}
