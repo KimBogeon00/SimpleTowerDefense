@@ -77,7 +77,7 @@ public class StageManager : MonoBehaviour
         (smMonsterHp, smMonsterSpeed, smMonsterCount, smMonsterCountTypeI, smMonsterCountTypeII,
         smMonsterCountTypeIII, smSpawnMonster, smWeightI, smWeightII, smWeightIII) = smStageData.GetComponent<StageData>().GetData(smCurStageIndex);
 
-        if (smWeightI <= Random.Range(0, 1000))
+        if (smWeightI >= Random.Range(0, 1000))
         {
             int rand = Random.Range(0, 12);
             while (true)
@@ -93,7 +93,7 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
-        if (smWeightII <= Random.Range(0, 1000))
+        if (smWeightII >= Random.Range(0, 1000))
         {
             int rand = Random.Range(0, 12);
             while (true)
@@ -109,7 +109,7 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
-        if (smWeightIII <= Random.Range(0, 1000))
+        if (smWeightIII >= Random.Range(0, 1000))
         {
             int rand = Random.Range(0, 12);
             while (true)

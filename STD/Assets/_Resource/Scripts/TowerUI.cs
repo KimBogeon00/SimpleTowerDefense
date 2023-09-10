@@ -70,7 +70,6 @@ public class TowerUI : MonoBehaviour
         }
 
     }
-
     public void TUTowerDataUpdate()
     {
         tuTargetNode = GameManager.gmInstance.gmMapNodes[GameManager.gmInstance.gmCurSelectNodeIndex];
@@ -87,6 +86,11 @@ public class TowerUI : MonoBehaviour
         tuTowerSellGold = tuTargetTower.GetComponent<Tower>().twrSellGold;
 
         tuTowerExpSlider.maxValue = tuTowerMaxExp;
+    }
 
+    public void TUTowerUpgrade()
+    {
+        tuTargetTower.GetComponent<Tower>().TowerUpgrade();
+        TUTowerDataUpdate();
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     [Header(" [ Int ]")]
-    public int twrLevel; // 타워 레벨
-    public int twrUpgradeLevel;
+    public int twrLevel = 1; // 타워 레벨
+    public int twrUpgradeLevel = 1; // 타워 업그레이드 레벨
     /// <summary> 
     /// <para>0 : Darkness, </para>
     /// <para>1 : Flame, </para>
@@ -30,12 +30,13 @@ public class Tower : MonoBehaviour
     public float twrCurAtkCoolTime; // 타워 공격 쿨타임 현재값.
     public float twrRange; // 타워 사거리 기본값.
     public float twrCurRange; // 타워 사거리 현재값.
-    public float twrCurExp;
-    public float twrMaxExp;
-    public float[] twrNeedExp = new float[11];
-    public float twrBuyGold;
-    public float twrUpgradeGold;
-    public float twrSellGold;
+    public float twrCurExp; // 타워 경험치 현재값.
+    public float twrMaxExp; // 타워 해당 레벨 경험치 최대값
+    public float[] twrNeedExp = new float[11]; // 타워 레벨 경험치 요구량.
+    public float twrBuyGold; // 타워 구입 비용
+    public float twrUpgradeGold; // 타워 업그레이드 비용
+    public float twrSellGold; // 타워 판매 비용
+
     [Space(20f)]
     [Header(" [ Bool ]")]
     [SerializeField] bool twrAtkCoolTimeCheck; // 타워 공격 쿨타임 체크.
@@ -46,6 +47,7 @@ public class Tower : MonoBehaviour
     [SerializeField] GameObject twrAtkPoint; // 타워 공격이 나가는지점.
     public GameObject twrCloseTarget; // 타워에서 가장 가까운 적.
     public GameObject[] twrBullet; // 타워가 발사할수있는 총알.
+    public GameObject twrRangeEffect;
     // [Space(20f)]
     [Header(" [ Others ]")]
     public LayerMask twrLayermask;
@@ -55,8 +57,14 @@ public class Tower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 1; i < 11; i++)
+        {
+            twrNeedExp[i] = i * 100;
+        }
         twrCurRange = twrRange;
+        twrCurAtkCoolTime = twrAtkCoolTime;
         twrCurAtk = twrAtk;
+        twrMaxExp = twrNeedExp[0];
         twrAtkCoolTimeCheck = false;
         InvokeRepeating("SearchMonster", 0f, 0.2f);
     }
@@ -64,20 +72,32 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (twrCloseTarget != null)
+        {
+            Vector3 targetpos = new Vector3(twrCloseTarget.transform.position.x, this.transform.position.y, twrCloseTarget.transform.position.z);
 
+            this.transform.LookAt(targetpos);
+        }
         if (twrCloseTarget != null && twrAtkCoolTimeCheck == false)
         {
             twrAtkCoolTimeCheck = true;
             StartCoroutine(TowerAttackDelay(twrCurAtkCoolTime, 0));
         }
 
+        if (twrCurExp >= twrMaxExp)
+        {
+            twrMaxExp = twrNeedExp[twrLevel];
+            twrLevel += 1;
+            TowerUpdate();
+        }
 
-
+        float val = twrCurRange / 6.6f;
+        twrRangeEffect.transform.localScale = new Vector3(val, val, 1);
         // 타워를 위아래로 움직여준다.
         if (twrMoveCheck == false)
         {
             this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.02f, this.transform.position.z);
-            if (this.transform.position.y >= 4.5f)
+            if (this.transform.position.y >= 5.5f)
             {
                 twrMoveCheck = true;
             }
@@ -86,7 +106,7 @@ public class Tower : MonoBehaviour
         if (twrMoveCheck == true)
         {
             this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 0.02f, this.transform.position.z);
-            if (this.transform.position.y < 2)
+            if (this.transform.position.y < 3)
             {
                 twrMoveCheck = false;
             }
@@ -156,6 +176,30 @@ public class Tower : MonoBehaviour
     }
     public void NodeIdentityIV()
     {
+
+    }
+
+    public void TowerUpgrade()
+    {
+        twrUpgradeLevel += 1;
+        TowerUpdate();
+    }
+
+    public void TowerRangeEffectON()
+    {
+        twrRangeEffect.SetActive(true);
+    }
+    public void TowerRangeEffectOFF()
+    {
+        twrRangeEffect.SetActive(false);
+    }
+
+    public void TowerUpdate()
+    {
+        twrCurAtk = Mathf.Floor((twrAtk * (1 + ((twrUpgradeLevel - 1) * 0.1f))) * (1 + ((twrLevel - 1) * 0.1f)) * 100) / 100;
+        twrCurRange = Mathf.Floor((twrRange * (1 + ((twrUpgradeLevel - 1) * 0.05f))) * (1 + ((twrLevel - 1) * 0.05f)) * 100) / 100;
+        twrCurAtkCoolTime = Mathf.Floor((twrAtkCoolTime * (1 - ((twrUpgradeLevel - 1) * 0.05f))) * (1 - ((twrLevel - 1) * 0.05f)) * 100) / 100;
+
 
     }
 

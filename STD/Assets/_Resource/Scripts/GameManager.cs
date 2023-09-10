@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject gmSelectSprite;
     [SerializeField] GameObject gmTowerUI;
     [SerializeField] GameObject gmTowerUIMananger;
+    [SerializeField] GameObject gmLastNode;
     /// <summary> 노드 선택 이미지를 가로로 눕히기 위한 변수. </summary>
     [SerializeField] Quaternion gmSelectSpriteQuaternion;
 
@@ -147,21 +148,42 @@ public class GameManager : MonoBehaviour
                 // 어떤 오브젝트인지 로그를 찍습니다.
                 if (hit.collider.CompareTag("Node"))
                 {
+                    if (!gmLastNode)
+                    {
+                        gmLastNode = hit.collider.transform.parent.GetComponent<Node>().gameObject;
+                    }
+
                     gmCurSelectNodeIndex = hit.collider.transform.parent.GetComponent<Node>().ndNodeIndex;
                     GameManager.gmInstance.GmCreateSelctSprite();
 
-                    Debug.Log(!gmTowerUI.activeSelf && (hit.collider.transform.parent.GetComponent<Node>().ndCurTower));
                     if (!gmTowerUI.activeSelf && (hit.collider.transform.parent.GetComponent<Node>().ndCurTower))
                     {
-
-                        gmLastTowerIndex = gmCurSelectNodeIndex;
                         gmTowerUI.SetActive(true);
+                        hit.collider.transform.parent.GetComponent<Node>().ndCurTower.GetComponent<Tower>().TowerRangeEffectON();
+                        gmLastNode = hit.transform.gameObject;
                         gmTowerUIMananger.GetComponent<TowerUI>().TUTowerDataUpdate();
                     }
                     else if (gmTowerUI.activeSelf && (gmLastTowerIndex == gmCurSelectNodeIndex))
                     {
+                        gmLastNode.GetComponentInParent<Node>().ndCurTower.GetComponent<Tower>().TowerRangeEffectOFF();
                         gmTowerUI.SetActive(false);
                     }
+
+                    if (gmTowerUI.activeSelf && (gmLastTowerIndex != gmCurSelectNodeIndex) && hit.collider.transform.parent.GetComponent<Node>().ndCurTower)
+                    {
+                        gmTowerUIMananger.GetComponent<TowerUI>().TUTowerDataUpdate();
+                        gmLastNode.GetComponentInParent<Node>().ndCurTower.GetComponent<Tower>().TowerRangeEffectOFF();
+                        hit.collider.transform.parent.GetComponent<Node>().ndCurTower.GetComponent<Tower>().TowerRangeEffectON();
+                    }
+
+                    if (gmTowerUI.activeSelf && !hit.collider.transform.parent.GetComponent<Node>().ndCurTower)
+                    {
+                        gmTowerUI.SetActive(false);
+                        gmLastNode.GetComponentInParent<Node>().ndCurTower.GetComponent<Tower>().TowerRangeEffectOFF();
+                    }
+
+                    gmLastNode = hit.transform.gameObject;
+                    gmLastTowerIndex = gmCurSelectNodeIndex;
                 }
                 // // 오브젝트 별로 코드를 작성할 수 있습니다.
                 // if (hit.collider.name == "Cube")
