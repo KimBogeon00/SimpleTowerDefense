@@ -191,11 +191,11 @@ MonoBehaviour:
   twrCurAtkCoolTime: 1
   twrRange: 15
   twrCurRange: 15
-  twrCurExp: 1
-  twrMaxExp: 0
+  twrCurExp: 0
+  twrMaxExp: 100
   twrNeedExp:
   - 0
-  - 0
+  - 100
   - 0
   - 0
   - 0

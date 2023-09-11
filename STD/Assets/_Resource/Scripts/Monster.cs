@@ -16,10 +16,10 @@ public class Monster : MonoBehaviour
     [Space(20f)]
     [Header(" [ Float ]")]
 
-
     public float mobHp;
     public float mobCurHp;
     public float mobSpeed;
+    public float mobExp;
 
     [Space(20f)]
     [Header(" [ Bool ]")]
@@ -30,6 +30,7 @@ public class Monster : MonoBehaviour
     [Space(20f)]
     [Header(" [ GameObject ]")]
     [SerializeField] GameObject mobMapWayPointParent;
+    [SerializeField] GameObject mobAttacktoTower;
 
 
     /// <summary> 맵에 있는 웨이포인트를 저장하기 위한 변수. </summary>
@@ -91,12 +92,18 @@ public class Monster : MonoBehaviour
         if (mobCurHp <= 0)
         {
             StageManager.smInstance.smMonsterKillCount += 1;
+            mobAttacktoTower.GetComponent<Tower>().twrCurExp += mobExp;
+            Debug.Log(mobExp + " : " + mobAttacktoTower.GetComponent<Tower>().twrCurExp);
             Destroy(this.gameObject);
         }
     }
 
     private void OnTriggerEnter(Collider col)
     {
+        if (mobWayPointSave[mobCurWayPoint] == 0)
+        {
+            Destroy(this.gameObject);
+        }
         if (col.gameObject == mobWayPoints[mobWayPointSave[mobCurWayPoint]])
         {
             if (mobWayPointSave.Length > mobCurWayPoint)
@@ -121,10 +128,11 @@ public class Monster : MonoBehaviour
         obj.transform.localRotation = Quaternion.Lerp(obj.transform.rotation, rotation, 1);
     }
 
-    public void MonsterHit(float atk, List<int> identity)
+    public void MonsterHit(float atk, List<int> identity, GameObject twr)
     {
         int identityCount = mobIdentityIndex.Count;
         int identitySameCount = 0;
+        mobAttacktoTower = twr;
         for (int i = 0; i < identityCount; i++)
         {
             if (identity.Contains(mobIdentityIndex[i]))

@@ -6,7 +6,7 @@
         {
             "stageIndex" : 1,
             "stageMonsterHp" : 5,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -19,7 +19,7 @@
         {
             "stageIndex" : 2,
             "stageMonsterHp" : 6,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -32,7 +32,7 @@
         {
             "stageIndex" : 3,
             "stageMonsterHp" : 7,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -45,7 +45,7 @@
         {
             "stageIndex" : 4,
             "stageMonsterHp" : 8,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -58,7 +58,7 @@
         {
             "stageIndex" : 5,
             "stageMonsterHp" : 9,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -71,7 +71,7 @@
         {
             "stageIndex" : 6,
             "stageMonsterHp" : 10,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -84,7 +84,7 @@
         {
             "stageIndex" : 7,
             "stageMonsterHp" : 11,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -97,7 +97,7 @@
         {
             "stageIndex" : 8,
             "stageMonsterHp" : 12,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -110,7 +110,7 @@
         {
             "stageIndex" : 9,
             "stageMonsterHp" : 13,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":30,
             "stageMonsterCountTypeI":24,
             "stageMonsterCountTypeII":3,
@@ -123,7 +123,7 @@
         {
             "stageIndex" : 10,
             "stageMonsterHp" : 14,
-            "stageMonsterSpeed" : 7.5,
+            "stageMonsterSpeed" : 10,
             "stageMonsterCount":3000,
             "stageMonsterCountTypeI":2400,
             "stageMonsterCountTypeII":300,

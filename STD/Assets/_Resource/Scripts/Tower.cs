@@ -64,7 +64,7 @@ public class Tower : MonoBehaviour
         twrCurRange = twrRange;
         twrCurAtkCoolTime = twrAtkCoolTime;
         twrCurAtk = twrAtk;
-        twrMaxExp = twrNeedExp[0];
+        twrMaxExp = twrNeedExp[1];
         twrAtkCoolTimeCheck = false;
         InvokeRepeating("SearchMonster", 0f, 0.2f);
     }
@@ -84,10 +84,11 @@ public class Tower : MonoBehaviour
             StartCoroutine(TowerAttackDelay(twrCurAtkCoolTime, 0));
         }
 
-        if (twrCurExp >= twrMaxExp)
+        if (twrCurExp >= twrMaxExp && twrLevel < 10)
         {
-            twrMaxExp = twrNeedExp[twrLevel];
             twrLevel += 1;
+            twrCurExp = 0;
+            twrMaxExp = twrNeedExp[twrLevel];
             TowerUpdate();
         }
 
@@ -159,6 +160,7 @@ public class Tower : MonoBehaviour
             twrbullets.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
             twrbullets.GetComponent<Bullet>().bulletAtk = twrCurAtk;
             twrbullets.GetComponent<Bullet>().identity = twrIdentity;
+            twrbullets.GetComponent<Bullet>().tower = this.gameObject;
         }
     }
 
@@ -199,8 +201,6 @@ public class Tower : MonoBehaviour
         twrCurAtk = Mathf.Floor((twrAtk * (1 + ((twrUpgradeLevel - 1) * 0.1f))) * (1 + ((twrLevel - 1) * 0.1f)) * 100) / 100;
         twrCurRange = Mathf.Floor((twrRange * (1 + ((twrUpgradeLevel - 1) * 0.05f))) * (1 + ((twrLevel - 1) * 0.05f)) * 100) / 100;
         twrCurAtkCoolTime = Mathf.Floor((twrAtkCoolTime * (1 - ((twrUpgradeLevel - 1) * 0.05f))) * (1 - ((twrLevel - 1) * 0.05f)) * 100) / 100;
-
-
     }
 
 

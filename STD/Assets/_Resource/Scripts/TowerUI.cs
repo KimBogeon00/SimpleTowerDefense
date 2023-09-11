@@ -46,6 +46,7 @@ public class TowerUI : MonoBehaviour
     {
         if (tuUI.activeSelf)
         {
+            TUTowerDataUpdate();
 
             tuTowerLevelUI.GetComponent<TextMeshProUGUI>().text = "LV <size=170%> " + tuTowerLevel;
             tuTowerExpUI.GetComponent<TextMeshProUGUI>().text = tuTowerCurExp + "<#557190> / " + tuTowerMaxExp;
@@ -56,7 +57,6 @@ public class TowerUI : MonoBehaviour
             tuTowerInfoValueUI[0].GetComponent<TextMeshProUGUI>().text = "" + tuTowerAtk;
             tuTowerInfoValueUI[1].GetComponent<TextMeshProUGUI>().text = "" + tuTowerRange;
             tuTowerInfoValueUI[2].GetComponent<TextMeshProUGUI>().text = "" + tuTowerAtkSpeed;
-
 
             tuTowerUpgradeLevelUI.GetComponent<TextMeshProUGUI>().text = tuTowerUpgradeLevel + " LV";
             tuTowerUpgradeUI.GetComponent<TextMeshProUGUI>().text = "" + tuTowerUpgradeGold;

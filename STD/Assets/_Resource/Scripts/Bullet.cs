@@ -23,6 +23,7 @@ public class Bullet : MonoBehaviour
     private Rigidbody rb;
     public Monster rotateToMouse;
     private GameObject target;
+    public GameObject tower;
 
 
     public List<int> identity = new List<int>();
@@ -72,7 +73,7 @@ public class Bullet : MonoBehaviour
     {
         if (co.gameObject.CompareTag("Monster"))
         {
-            co.GetComponent<Monster>().MonsterHit(bulletAtk, identity);
+            co.GetComponent<Monster>().MonsterHit(bulletAtk, identity, tower);
             if (!bounce)
             {
                 if (co.gameObject.tag != "Bullet" && !collided)

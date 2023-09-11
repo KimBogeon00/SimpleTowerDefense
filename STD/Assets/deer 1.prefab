@@ -410,8 +410,10 @@ MonoBehaviour:
   mobHp: 1000
   mobCurHp: 0
   mobSpeed: 5
+  mobExp: 900
   mobMoveCheck: 0
   mobMapWayPointParent: {fileID: 0}
+  mobAttacktoTower: {fileID: 0}
   mobWayPoints:
   - {fileID: 0}
   - {fileID: 0}
