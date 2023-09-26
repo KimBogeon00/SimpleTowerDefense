@@ -13,6 +13,17 @@ public class GameManager : MonoBehaviour
 
     public int gmLastTowerIndex;
 
+    public int gmGold;
+
+    public float gmMobDeadTime;
+    public float gmMobHpWeight;
+    public float gmMobSpeedWeight;
+    public float[] gmMobDeadTimes = new float[3];
+    public float[] gmMobHpWeights = new float[3];
+    public float[] gmMobSpeedWeights = new float[3];
+
+
+
 
     /// <summary> 노드 부모를 저장하기 위한 변수. </summary>
     [Space(20f)]
@@ -40,6 +51,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         gmSelectSpriteQuaternion = Quaternion.Euler(90f, 0, 0);
         if (gmInstance == null)
         {
@@ -72,6 +84,21 @@ public class GameManager : MonoBehaviour
         GmNodeSelectCheck();
     }
 
+
+
+    public void WeightUpdate()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (gmMobDeadTimes[i] < gmMobDeadTime)
+            {
+                gmMobDeadTimes[i] = gmMobDeadTime;
+                gmMobHpWeights[i] = gmMobHpWeight;
+                gmMobSpeedWeights[i] = gmMobSpeedWeight;
+                break;
+            }
+        }
+    }
 
     /// <summary> 노드를 선택할때 선택 이미지를 생성하는 함수. </summary>
     public void GmCreateSelctSprite()

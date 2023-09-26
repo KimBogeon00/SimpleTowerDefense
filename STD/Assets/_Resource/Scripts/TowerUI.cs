@@ -12,6 +12,8 @@ public class TowerUI : MonoBehaviour
     public GameObject tuTargetTower;
 
     int tuTowerLevel;
+    int tuTowerAbility1;
+    bool[] tuTowerAbilityCheck = new bool[4];
     float tuTowerCurExp;
     float tuTowerMaxExp;
 
@@ -21,14 +23,16 @@ public class TowerUI : MonoBehaviour
 
     float tuTowerAtk;
     float tuTowerAtkSpeed;
+
     float tuTowerRange;
 
     [SerializeField] string[] tuTowerInfoText;
 
     public GameObject tuTowerLevelUI;
     public GameObject tuTowerExpUI;
-    public GameObject[] tuTowerInfoTextUI = new GameObject[3];
-    public GameObject[] tuTowerInfoValueUI = new GameObject[3];
+    public GameObject[] tuTowerInfoUI = new GameObject[8];
+    public GameObject[] tuTowerInfoTextUI = new GameObject[8];
+    public GameObject[] tuTowerInfoValueUI = new GameObject[8];
     public GameObject tuTowerUpgradeLevelUI;
     public Slider tuTowerExpSlider;
     public Slider tuTowerUpgradeLevelSlider;
@@ -56,7 +60,8 @@ public class TowerUI : MonoBehaviour
             }
             tuTowerInfoValueUI[0].GetComponent<TextMeshProUGUI>().text = "" + tuTowerAtk;
             tuTowerInfoValueUI[1].GetComponent<TextMeshProUGUI>().text = "" + tuTowerRange;
-            tuTowerInfoValueUI[2].GetComponent<TextMeshProUGUI>().text = "" + tuTowerAtkSpeed;
+            tuTowerInfoValueUI[2].GetComponent<TextMeshProUGUI>().text = tuTowerAtkSpeed + " / 1 sec";
+            tuTowerInfoValueUI[3].GetComponent<TextMeshProUGUI>().text = tuTowerAbility1 + " %";
 
             tuTowerUpgradeLevelUI.GetComponent<TextMeshProUGUI>().text = tuTowerUpgradeLevel + " LV";
             tuTowerUpgradeUI.GetComponent<TextMeshProUGUI>().text = "" + tuTowerUpgradeGold;
@@ -78,19 +83,66 @@ public class TowerUI : MonoBehaviour
         tuTowerAtk = tuTargetTower.GetComponent<Tower>().twrCurAtk;
         tuTowerRange = tuTargetTower.GetComponent<Tower>().twrCurRange;
         tuTowerAtkSpeed = tuTargetTower.GetComponent<Tower>().twrCurAtkCoolTime;
-        tuTowerLevel = tuTargetTower.GetComponent<Tower>().twrLevel;
+        tuTowerAbility1 = tuTargetTower.GetComponent<Tower>().twrDoubleShootChance;
+        //tuTowerLevel = tuTargetTower.GetComponent<Tower>().twrLevel;
         tuTowerUpgradeLevel = tuTargetTower.GetComponent<Tower>().twrUpgradeLevel;
         tuTowerCurExp = tuTargetTower.GetComponent<Tower>().twrCurExp;
         tuTowerMaxExp = tuTargetTower.GetComponent<Tower>().twrMaxExp;
         tuTowerUpgradeGold = tuTargetTower.GetComponent<Tower>().twrUpgradeGold;
         tuTowerSellGold = tuTargetTower.GetComponent<Tower>().twrSellGold;
 
+        for (int tu2 = 0; tu2 < 4; tu2++)
+        {
+            tuTowerAbilityCheck[tu2] = tuTargetTower.GetComponent<Tower>().twrAbilityCheck[tu2];
+        }
+
+        if (tuTowerAbilityCheck[0])
+        {
+            tuTowerInfoUI[3].SetActive(true);
+        }
+        else
+        {
+            tuTowerInfoUI[3].SetActive(false);
+        }
+
+        if (tuTowerAbilityCheck[1])
+        {
+            tuTowerInfoUI[4].SetActive(true);
+        }
+        else
+        {
+            tuTowerInfoUI[4].SetActive(false);
+        }
+
+        if (tuTowerAbilityCheck[2])
+        {
+            tuTowerInfoUI[5].SetActive(true);
+        }
+        else
+        {
+            tuTowerInfoUI[5].SetActive(false);
+        }
+
+        if (tuTowerAbilityCheck[3])
+        {
+            tuTowerInfoUI[6].SetActive(true);
+        }
+        else
+        {
+            tuTowerInfoUI[6].SetActive(false);
+        }
+
         tuTowerExpSlider.maxValue = tuTowerMaxExp;
     }
 
     public void TUTowerUpgrade()
     {
-        tuTargetTower.GetComponent<Tower>().TowerUpgrade();
+        tuTargetTower.GetComponent<Tower>().TowerUpdate();
         TUTowerDataUpdate();
+    }
+
+    public void TUColorChange()
+    {
+        tuTargetTower.GetComponent<Tower>().twrColor = Random.Range(0, 5);
     }
 }

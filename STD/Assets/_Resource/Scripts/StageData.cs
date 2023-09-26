@@ -56,14 +56,11 @@ public class StageData : MonoBehaviour
 
     /// <summary> 스테이지에 대한 index값을 넣으면 해당 스테이지의 정보를 보내주는 함수. </summary>
     /// <param name="index"> 스테이지 index값 입력. </param>
-    public (float, float, int, int, int, int, int[], int, int, int) GetData(int index)
+    public (float, float, int, int[], int, int, int) GetData(int index)
     {
         return (st.stages[index].stageMonsterHp,
         st.stages[index].stageMonsterSpeed,
         st.stages[index].stageMonsterCount,
-        st.stages[index].stageMonsterCountTypeI,
-        st.stages[index].stageMonsterCountTypeII,
-        st.stages[index].stageMonsterCountTypeIII,
         st.stages[index].stageSpawnMonster,
         st.stages[index].stageWeightI,
         st.stages[index].stageWeightII,

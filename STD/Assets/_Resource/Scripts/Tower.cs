@@ -5,8 +5,11 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     [Header(" [ Int ]")]
-    public int twrLevel = 1; // 타워 레벨
+    //public int twrLevel = 1; // 타워 레벨
     public int twrUpgradeLevel = 1; // 타워 업그레이드 레벨
+    public int twrColor;
+    public int twrType;
+    public int twrDoubleShootChance;
     /// <summary> 
     /// <para>0 : Darkness, </para>
     /// <para>1 : Flame, </para>
@@ -40,20 +43,24 @@ public class Tower : MonoBehaviour
     [Space(20f)]
     [Header(" [ Bool ]")]
     [SerializeField] bool twrAtkCoolTimeCheck; // 타워 공격 쿨타임 체크.
+    public bool[] twrAbilityCheck = new bool[4];
     bool twrMoveCheck = false; // 타워 위아래 움직임을 위한 변수.
 
     [Space(20f)]
     [Header(" [ GameObject ]")]
-    [SerializeField] GameObject twrAtkPoint; // 타워 공격이 나가는지점.
+    [SerializeField] GameObject[] twrAtkPoint; // 타워 공격이 나가는지점.
     public GameObject twrCloseTarget; // 타워에서 가장 가까운 적.
     public GameObject[] twrBullet; // 타워가 발사할수있는 총알.
     public GameObject twrRangeEffect;
+
     // [Space(20f)]
     [Header(" [ Others ]")]
     public LayerMask twrLayermask;
 
     [Tooltip("0 : Darkness, 1 : Flame, 2 : Heart, 3 : Ice, 4 : Leaves, 5 : Light, 6 : Lightning, 7 : Moon, 8 : Soil, 9 : Sun, 10 : Water, 11 : Wind")]
     public List<int> twrIdentity = new List<int>(); // 타워 속성
+
+    [SerializeField] Material[] twrColorMaterial = new Material[5];
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +68,7 @@ public class Tower : MonoBehaviour
         {
             twrNeedExp[i] = i * 100;
         }
+        twrColor = Random.Range(0, 5);
         twrCurRange = twrRange;
         twrCurAtkCoolTime = twrAtkCoolTime;
         twrCurAtk = twrAtk;
@@ -72,6 +80,7 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.GetComponent<MeshRenderer>().material = twrColorMaterial[twrColor];
         if (twrCloseTarget != null)
         {
             Vector3 targetpos = new Vector3(twrCloseTarget.transform.position.x, this.transform.position.y, twrCloseTarget.transform.position.z);
@@ -84,13 +93,13 @@ public class Tower : MonoBehaviour
             StartCoroutine(TowerAttackDelay(twrCurAtkCoolTime, 0));
         }
 
-        if (twrCurExp >= twrMaxExp && twrLevel < 10)
-        {
-            twrLevel += 1;
-            twrCurExp = 0;
-            twrMaxExp = twrNeedExp[twrLevel];
-            TowerUpdate();
-        }
+        // if (twrCurExp >= twrMaxExp && twrLevel < 10)
+        // {
+        //     twrLevel += 1;
+        //     twrCurExp = 0;
+        //     twrMaxExp = twrNeedExp[twrLevel];
+        //     TowerUpdate();
+        // }
 
         float val = twrCurRange / 6.6f;
         twrRangeEffect.transform.localScale = new Vector3(val, val, 1);
@@ -156,11 +165,21 @@ public class Tower : MonoBehaviour
     {
         if (twrCloseTarget != null)
         {
-            GameObject twrbullets = Instantiate(twrBullet[bulletnum], twrAtkPoint.transform.position, Quaternion.identity) as GameObject;
-            twrbullets.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
-            twrbullets.GetComponent<Bullet>().bulletAtk = twrCurAtk;
-            twrbullets.GetComponent<Bullet>().identity = twrIdentity;
-            twrbullets.GetComponent<Bullet>().tower = this.gameObject;
+            GameObject twrbullet1 = Instantiate(twrBullet[bulletnum], twrAtkPoint[0].transform.position, Quaternion.identity) as GameObject;
+            twrbullet1.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
+            twrbullet1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
+            twrbullet1.GetComponent<Bullet>().identity = twrIdentity;
+            twrbullet1.GetComponent<Bullet>().tower = this.gameObject;
+        }
+
+        if (twrDoubleShootChance > Random.Range(0, 101) && twrCloseTarget != null)
+        {
+            Debug.Log("더블샷 !!");
+            GameObject twrbullet2 = Instantiate(twrBullet[bulletnum], twrAtkPoint[1].transform.position, Quaternion.identity) as GameObject;
+            twrbullet2.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
+            twrbullet2.GetComponent<Bullet>().bulletAtk = twrCurAtk;
+            twrbullet2.GetComponent<Bullet>().identity = twrIdentity;
+            twrbullet2.GetComponent<Bullet>().tower = this.gameObject;
         }
     }
 
@@ -181,12 +200,6 @@ public class Tower : MonoBehaviour
 
     }
 
-    public void TowerUpgrade()
-    {
-        twrUpgradeLevel += 1;
-        TowerUpdate();
-    }
-
     public void TowerRangeEffectON()
     {
         twrRangeEffect.SetActive(true);
@@ -198,9 +211,22 @@ public class Tower : MonoBehaviour
 
     public void TowerUpdate()
     {
-        twrCurAtk = Mathf.Floor((twrAtk * (1 + ((twrUpgradeLevel - 1) * 0.1f))) * (1 + ((twrLevel - 1) * 0.1f)) * 100) / 100;
-        twrCurRange = Mathf.Floor((twrRange * (1 + ((twrUpgradeLevel - 1) * 0.05f))) * (1 + ((twrLevel - 1) * 0.05f)) * 100) / 100;
-        twrCurAtkCoolTime = Mathf.Floor((twrAtkCoolTime * (1 - ((twrUpgradeLevel - 1) * 0.05f))) * (1 - ((twrLevel - 1) * 0.05f)) * 100) / 100;
+        twrUpgradeLevel = TowerUpgrade.tuInstance.tuTowerColorUpgradeLevel[twrColor];
+        twrCurAtk = Mathf.Floor(twrAtk * (1 + ((twrUpgradeLevel - 1) * 0.1f)) * 100) / 100;
+        int _2 = Mathf.FloorToInt(twrUpgradeLevel / 2);
+        int _3 = Mathf.FloorToInt(twrUpgradeLevel / 3);
+        int _5 = Mathf.FloorToInt(twrUpgradeLevel / 5);
+        twrCurRange = Mathf.Floor(twrRange * (1 + ((_3) * 0.05f)) * 100) / 100;
+        twrCurAtkCoolTime = Mathf.Floor(twrAtkCoolTime * Mathf.Pow(0.95f, _5) * 100) / 100;
+
+        if (twrType == 0 && twrUpgradeLevel < 151)
+        {
+            twrDoubleShootChance = _2 + 5;
+        }
+        else if (twrType == 0 && twrUpgradeLevel >= 151)
+        {
+            twrDoubleShootChance = 80;
+        }
     }
 
 

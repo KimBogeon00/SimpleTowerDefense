@@ -9,9 +9,17 @@ public class Monster : MonoBehaviour
     [Header(" [ Int ]")]
     public int[] mobWayPointSave;
     public int mobType;
+    /// <summary> 
+    /// <para>0 RED  </para>
+    /// <para>1 GREEN  </para>
+    /// <para>2 BLUE  </para>
+    /// <para>3 ORANGE  </para>
+    /// <para>4 PURPLE  </para>
+    ///</summary>
+    public int mobColor;
     [SerializeField] int mobCurWayPoint;
-
-
+    public int mobWeightValue;
+    public int mobGold;
 
     [Space(20f)]
     [Header(" [ Float ]")]
@@ -20,6 +28,10 @@ public class Monster : MonoBehaviour
     public float mobCurHp;
     public float mobSpeed;
     public float mobExp;
+
+    public float mobDeadTime;
+    public float mobHpWeight;
+    public float mobSpeedWeight;
 
     [Space(20f)]
     [Header(" [ Bool ]")]
@@ -55,10 +67,9 @@ public class Monster : MonoBehaviour
     {
         mobMapWayPointParent = GameObject.FindWithTag("MapWayPointParent"); // MapWayPointParent 테그를 찾아서 mobMapWayPointParent 에 대입.
         mobCurWayPoint = 0; // 웨이포인트 0번 부터 시작.
-        mobCurHp = mobHp; // hp 초기화
+        mobCurHp = mobHp;  // hp 초기화
         mobHpSlider.maxValue = mobHp;
-
-        mobHpSliderFillImage.sprite = mobSliderImage[mobType];
+        mobHpSliderFillImage.sprite = mobSliderImage[mobColor];
 
         mobIdentityImage[0].sprite = mobIdentityImageList[12];
         mobIdentityImage[1].sprite = mobIdentityImageList[12];
@@ -80,7 +91,7 @@ public class Monster : MonoBehaviour
 
     void Update()
     {
-
+        mobDeadTime += Time.deltaTime;
         // 몬스터가 알아서 이동할수있게 해줌.
         this.transform.position = Vector3.MoveTowards(this.transform.position, mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position, mobSpeed * Time.deltaTime);
         // 몬스터가 이동할때 목표물을 바라보면서 이동할수있게 해줌.
@@ -92,8 +103,12 @@ public class Monster : MonoBehaviour
         if (mobCurHp <= 0)
         {
             StageManager.smInstance.smMonsterKillCount += 1;
-            mobAttacktoTower.GetComponent<Tower>().twrCurExp += mobExp;
-            Debug.Log(mobExp + " : " + mobAttacktoTower.GetComponent<Tower>().twrCurExp);
+            // mobAttacktoTower.GetComponent<Tower>().twrCurExp += mobExp;
+            // Debug.Log(mobExp + " : " + mobAttacktoTower.GetComponent<Tower>().twrCurExp);
+            GameManager.gmInstance.gmGold += mobGold;
+            MonsterStudy.msInstance.msMonsterDeadTime[mobColor] += mobDeadTime;
+            MonsterStudy.msInstance.msMonsterDeadCount[mobColor] += 1;
+
             Destroy(this.gameObject);
         }
     }
@@ -102,6 +117,9 @@ public class Monster : MonoBehaviour
     {
         if (mobWayPointSave[mobCurWayPoint] == 0)
         {
+            StageManager.smInstance.smMonsterKillCount += 1;
+            MonsterStudy.msInstance.msMonsterDeadTime[mobColor] += mobDeadTime;
+            MonsterStudy.msInstance.msMonsterDeadCount[mobColor] += 1;
             Destroy(this.gameObject);
         }
         if (col.gameObject == mobWayPoints[mobWayPointSave[mobCurWayPoint]])
@@ -141,56 +159,66 @@ public class Monster : MonoBehaviour
             }
         }
 
-        Debug.Log("--- 플레이어 아이덴티티와 몬스터 아이덴티티 겹치는 갯수 : " + identitySameCount);
+        //Debug.Log("--- 플레이어 아이덴티티와 몬스터 아이덴티티 겹치는 갯수 : " + identitySameCount);
 
-        if (identitySameCount == 0)
+        if (twr.GetComponent<Tower>().twrColor == mobColor)
         {
-            switch (identityCount)
-            {
-                case 0:
-                    mobCurHp -= atk;
-                    Debug.Log("----- [ 1 ] 플레이어 일반 공격, : " + atk + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                case 1:
-                    mobCurHp -= Mathf.Floor((atk * 0.9f) * 100) / 100; // 데미지 10 % 감소
-                    Debug.Log("----- [ 2 ] 데미지 감소 I , : " + Mathf.Floor((atk * 0.9f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                case 2:
-                    mobCurHp -= Mathf.Floor((atk * 0.75f) * 100) / 100; // 데미지 25 % 감소
-                    Debug.Log("----- [ 3 ] 데미지 감소 II , : " + Mathf.Floor((atk * 0.75f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                case 3:
-                    mobCurHp -= Mathf.Floor((atk * 0.5f) * 100) / 100; // 데미지 50 % 감소
-                    Debug.Log("----- [ 4 ] 데미지 감소 III , : " + Mathf.Floor((atk * 0.5f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                default:
-                    break;
-            }
+            mobCurHp -= atk * 1.5f;
         }
         else
         {
-            switch (identitySameCount)
-            {
-                case 0:
-                    mobCurHp -= atk;
-                    Debug.Log("----- [ 1-1 ] 플레이어 일반 공격, : " + atk + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                case 1:
-                    mobCurHp -= Mathf.Floor((atk * 1.1f) * 100) / 100; // 데미지 10 % 증가
-                    Debug.Log("----- [ 2 ] 데미지 증가 I , : " + Mathf.Floor((atk * 1.1f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                case 2:
-                    mobCurHp -= Mathf.Floor((atk * 1.2f) * 100) / 100; // 데미지 20 % 증가
-                    Debug.Log("----- [ 3 ] 데미지 증가 II , : " + Mathf.Floor((atk * 1.2f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                case 3:
-                    mobCurHp -= Mathf.Floor((atk * 1.3f) * 100) / 100; // 데미지 30 % 증가
-                    Debug.Log("----- [ 4 ] 데미지 증가 III , : " + Mathf.Floor((atk * 1.3f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
-                    break;
-                default:
-                    break;
-            }
+            mobCurHp -= atk;
         }
+
+
+        // if (identitySameCount == 0)
+        // {
+        //     switch (identityCount)
+        //     {
+        //         case 0:
+        //             mobCurHp -= atk;
+        //             Debug.Log("----- [ 1 ] 플레이어 일반 공격, : " + atk + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         case 1:
+        //             mobCurHp -= Mathf.Floor((atk * 0.9f) * 100) / 100; // 데미지 10 % 감소
+        //             Debug.Log("----- [ 2 ] 데미지 감소 I , : " + Mathf.Floor((atk * 0.9f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         case 2:
+        //             mobCurHp -= Mathf.Floor((atk * 0.75f) * 100) / 100; // 데미지 25 % 감소
+        //             Debug.Log("----- [ 3 ] 데미지 감소 II , : " + Mathf.Floor((atk * 0.75f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         case 3:
+        //             mobCurHp -= Mathf.Floor((atk * 0.5f) * 100) / 100; // 데미지 50 % 감소
+        //             Debug.Log("----- [ 4 ] 데미지 감소 III , : " + Mathf.Floor((atk * 0.5f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
+        // else
+        // {
+        //     switch (identitySameCount)
+        //     {
+        //         case 0:
+        //             mobCurHp -= atk;
+        //             Debug.Log("----- [ 1-1 ] 플레이어 일반 공격, : " + atk + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         case 1:
+        //             mobCurHp -= Mathf.Floor((atk * 1.1f) * 100) / 100; // 데미지 10 % 증가
+        //             Debug.Log("----- [ 2 ] 데미지 증가 I , : " + Mathf.Floor((atk * 1.1f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         case 2:
+        //             mobCurHp -= Mathf.Floor((atk * 1.2f) * 100) / 100; // 데미지 20 % 증가
+        //             Debug.Log("----- [ 3 ] 데미지 증가 II , : " + Mathf.Floor((atk * 1.2f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         case 3:
+        //             mobCurHp -= Mathf.Floor((atk * 1.3f) * 100) / 100; // 데미지 30 % 증가
+        //             Debug.Log("----- [ 4 ] 데미지 증가 III , : " + Mathf.Floor((atk * 1.3f) * 100) / 100 + " 몬스터 체력 : " + mobCurHp);
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
 
 
     }
