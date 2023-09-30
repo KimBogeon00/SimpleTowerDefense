@@ -8,8 +8,11 @@ public class Tower : MonoBehaviour
     //public int twrLevel = 1; // 타워 레벨
     public int twrUpgradeLevel = 1; // 타워 업그레이드 레벨
     public int twrColor;
-    public int twrType;
-    public int twrDoubleShootChance;
+    public int twrType; // 0 노말 타워 , 1 레피드 타워 , 2 스나이퍼 타워
+    /// <summary> 
+    /// <para> [ 0 노말 타워 ] index 0 - : 더블샷 확률, </para>
+    ///</summary>
+    public int[] twrValueInt;
     /// <summary> 
     /// <para>0 : Darkness, </para>
     /// <para>1 : Flame, </para>
@@ -40,6 +43,13 @@ public class Tower : MonoBehaviour
     public float twrUpgradeGold; // 타워 업그레이드 비용
     public float twrSellGold; // 타워 판매 비용
 
+    /// <summary> 
+    /// <para> [ 2 스나이퍼 타워 ] index 0 - : 크리티컬 확률, </para>
+    /// <para> [ 2 스나이퍼 타워 ] index 1 - : 크리티컬 데미지, </para>
+    /// <para> [ 2 스나이퍼 타워 ] index 2 - : 체력 비례 뎀, </para>
+    ///</summary>
+    public float[] twrValueFloat;
+
     [Space(20f)]
     [Header(" [ Bool ]")]
     [SerializeField] bool twrAtkCoolTimeCheck; // 타워 공격 쿨타임 체크.
@@ -55,6 +65,9 @@ public class Tower : MonoBehaviour
 
     // [Space(20f)]
     [Header(" [ Others ]")]
+
+    public string[] twrValueFStr;
+    public string[] twrValueIStr;
     public LayerMask twrLayermask;
 
     [Tooltip("0 : Darkness, 1 : Flame, 2 : Heart, 3 : Ice, 4 : Leaves, 5 : Light, 6 : Lightning, 7 : Moon, 8 : Soil, 9 : Sun, 10 : Water, 11 : Wind")]
@@ -69,11 +82,24 @@ public class Tower : MonoBehaviour
             twrNeedExp[i] = i * 100;
         }
         twrColor = Random.Range(0, 5);
+        if (twrType == 1)
+        {
+            twrRange = twrRange * 0.75f;
+            twrAtk = twrAtk * 0.1f;
+            twrAtkCoolTime = twrAtkCoolTime * 0.5f;
+        }
+        else if (twrType == 2)
+        {
+            twrRange = twrRange * 1.5f;
+            twrAtk = twrAtk * 1.75f;
+            twrAtkCoolTime = twrAtkCoolTime * 1.5f;
+        }
         twrCurRange = twrRange;
         twrCurAtkCoolTime = twrAtkCoolTime;
         twrCurAtk = twrAtk;
         twrMaxExp = twrNeedExp[1];
         twrAtkCoolTimeCheck = false;
+        TowerUpdate();
         InvokeRepeating("SearchMonster", 0f, 0.2f);
     }
 
@@ -163,24 +189,57 @@ public class Tower : MonoBehaviour
     /// <param name="bulletnum"> 어떤 총알을 사용할것인지 . ex) 0, 1, 2... </param>
     public void TowerAttack(int bulletnum)
     {
-        if (twrCloseTarget != null)
+        switch (twrType)
         {
-            GameObject twrbullet1 = Instantiate(twrBullet[bulletnum], twrAtkPoint[0].transform.position, Quaternion.identity) as GameObject;
-            twrbullet1.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
-            twrbullet1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
-            twrbullet1.GetComponent<Bullet>().identity = twrIdentity;
-            twrbullet1.GetComponent<Bullet>().tower = this.gameObject;
+            case 0:
+                if (twrCloseTarget != null)
+                {
+                    GameObject twrbullet0_0 = Instantiate(twrBullet[Random.Range(0, 3)], twrAtkPoint[0].transform.position, Quaternion.identity) as GameObject;
+                    twrbullet0_0.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
+                    twrbullet0_0.GetComponent<Bullet>().bulletAtk = twrCurAtk;
+                    twrbullet0_0.GetComponent<Bullet>().identity = twrIdentity;
+                    twrbullet0_0.GetComponent<Bullet>().tower = this.gameObject;
+                }
+                if (twrValueInt[0] > Random.Range(0, 101) && twrCloseTarget != null)
+                {
+                    Debug.Log("더블샷 !!");
+                    GameObject twrbullet0_1 = Instantiate(twrBullet[Random.Range(0, 3)], twrAtkPoint[1].transform.position, Quaternion.identity) as GameObject;
+                    twrbullet0_1.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
+                    twrbullet0_1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
+                    twrbullet0_1.GetComponent<Bullet>().identity = twrIdentity;
+                    twrbullet0_1.GetComponent<Bullet>().tower = this.gameObject;
+                }
+                break;
+            case 1:
+                if (twrCloseTarget != null)
+                {
+                    StartCoroutine(TowerAttackType1(bulletnum));
+                }
+                break;
+            case 2:
+                if (twrValueFloat[0] > Random.Range(0, 101) && twrCloseTarget != null)
+                {
+                    Debug.Log("크리티컬 !!");
+                    GameObject twrbullet2_0 = Instantiate(twrBullet[Random.Range(0, 3)], twrAtkPoint[0].transform.position, Quaternion.identity) as GameObject;
+                    twrbullet2_0.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
+                    twrbullet2_0.GetComponent<Bullet>().bulletAtk = twrCurAtk * twrValueFloat[1];
+                    twrbullet2_0.GetComponent<Bullet>().identity = twrIdentity;
+                    twrbullet2_0.GetComponent<Bullet>().tower = this.gameObject;
+                }
+                else if (twrCloseTarget != null)
+                {
+                    GameObject twrbullet2_1 = Instantiate(twrBullet[Random.Range(0, 3)], twrAtkPoint[0].transform.position, Quaternion.identity) as GameObject;
+                    twrbullet2_1.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
+                    twrbullet2_1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
+                    twrbullet2_1.GetComponent<Bullet>().identity = twrIdentity;
+                    twrbullet2_1.GetComponent<Bullet>().tower = this.gameObject;
+                }
+                break;
+            default:
+                break;
         }
 
-        if (twrDoubleShootChance > Random.Range(0, 101) && twrCloseTarget != null)
-        {
-            Debug.Log("더블샷 !!");
-            GameObject twrbullet2 = Instantiate(twrBullet[bulletnum], twrAtkPoint[1].transform.position, Quaternion.identity) as GameObject;
-            twrbullet2.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
-            twrbullet2.GetComponent<Bullet>().bulletAtk = twrCurAtk;
-            twrbullet2.GetComponent<Bullet>().identity = twrIdentity;
-            twrbullet2.GetComponent<Bullet>().tower = this.gameObject;
-        }
+
     }
 
     public void NodeIdentityI()
@@ -212,21 +271,54 @@ public class Tower : MonoBehaviour
     public void TowerUpdate()
     {
         twrUpgradeLevel = TowerUpgrade.tuInstance.tuTowerColorUpgradeLevel[twrColor];
-        twrCurAtk = Mathf.Floor(twrAtk * (1 + ((twrUpgradeLevel - 1) * 0.1f)) * 100) / 100;
         int _2 = Mathf.FloorToInt(twrUpgradeLevel / 2);
         int _3 = Mathf.FloorToInt(twrUpgradeLevel / 3);
         int _5 = Mathf.FloorToInt(twrUpgradeLevel / 5);
+        twrCurAtk = Mathf.Floor(twrAtk * (1 + ((twrUpgradeLevel - 1) * 0.1f)) * 100) / 100;
         twrCurRange = Mathf.Floor(twrRange * (1 + ((_3) * 0.05f)) * 100) / 100;
-        twrCurAtkCoolTime = Mathf.Floor(twrAtkCoolTime * Mathf.Pow(0.95f, _5) * 100) / 100;
 
-        if (twrType == 0 && twrUpgradeLevel < 151)
+        switch (twrType)
         {
-            twrDoubleShootChance = _2 + 5;
+            case 0:
+                if (twrUpgradeLevel < 151)
+                {
+                    twrValueInt[0] = _2 + 5; // 타워 더블샷 확률 . 기본 5% , 2레벨마다 1%씩 증가.
+                }
+                else if (twrUpgradeLevel >= 151)
+                {
+                    twrValueInt[0] = 80;
+                }
+                twrCurAtkCoolTime = Mathf.Floor(twrAtkCoolTime * Mathf.Pow(0.93f, _5) * 100) / 100;
+                break;
+            case 1:
+                twrCurAtkCoolTime = Mathf.Floor(twrAtkCoolTime * Mathf.Pow(0.95f, _5) * 100) / 100;
+                break;
+            case 2:
+                if (twrUpgradeLevel < 151)
+                {
+                    twrValueFloat[0] = 5 + twrUpgradeLevel * 0.5f;
+                }
+                else if (twrUpgradeLevel >= 151)
+                {
+                    twrValueFloat[0] = 80;
+                }
+
+                twrValueFloat[1] = 1.5f + (0.05f * twrUpgradeLevel);
+
+                if (twrUpgradeLevel < 121)
+                {
+                    twrValueFloat[2] = 0.01f + (_3 * 0.001f);
+                }
+                else if (twrUpgradeLevel >= 121)
+                {
+                    twrValueFloat[2] = 0.05f;
+                }
+                twrCurAtkCoolTime = Mathf.Floor(twrAtkCoolTime * Mathf.Pow(0.97f, _5) * 100) / 100;
+                break;
+            default:
+                break;
         }
-        else if (twrType == 0 && twrUpgradeLevel >= 151)
-        {
-            twrDoubleShootChance = 80;
-        }
+
     }
 
 
@@ -238,5 +330,24 @@ public class Tower : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
         TowerAttack(bulletnum);
         twrAtkCoolTimeCheck = false;
+    }
+
+    IEnumerator TowerAttackType1(int bulletnum)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (twrType == 1)
+            {
+                if (twrCloseTarget != null)
+                {
+                    GameObject twrbullet1 = Instantiate(twrBullet[Random.Range(0, 2)], twrAtkPoint[i].transform.position, Quaternion.identity) as GameObject;
+                    twrbullet1.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
+                    twrbullet1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
+                    twrbullet1.GetComponent<Bullet>().identity = twrIdentity;
+                    twrbullet1.GetComponent<Bullet>().tower = this.gameObject;
+                }
+            }
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
     }
 }

@@ -101,7 +101,7 @@ public class Bullet : MonoBehaviour
                     // Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
                     // Vector3 pos = contact.point;
 
-                    if (hitPrefab != null)
+                    if (hitPrefab != null && target != null)
                     {
                         var hitVFX = Instantiate(hitPrefab, target.transform.position, Quaternion.identity) as GameObject;
 

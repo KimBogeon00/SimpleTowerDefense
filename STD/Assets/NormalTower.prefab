@@ -187,9 +187,9 @@ MonoBehaviour:
   twrUpgradeLevel: 1
   twrColor: 0
   twrType: 0
-  twrDoubleShootChance: 5
-  twrAtk: 1
-  twrCurAtk: 1
+  twrValueInt: 00000000
+  twrAtk: 0.1
+  twrCurAtk: 0.1
   twrAtkCoolTime: 1
   twrCurAtkCoolTime: 1
   twrRange: 15
@@ -211,6 +211,8 @@ MonoBehaviour:
   twrBuyGold: 200
   twrUpgradeGold: 500
   twrSellGold: 100
+  twrValueFloat:
+  - 0
   twrAtkCoolTimeCheck: 0
   twrAbilityCheck: 01000000
   twrAtkPoint:
@@ -218,10 +220,13 @@ MonoBehaviour:
   - {fileID: 7082654778564476378}
   twrCloseTarget: {fileID: 0}
   twrBullet:
-  - {fileID: 1170744857039610, guid: 1fcfcb93d7455e94bb4991c5ab289a41, type: 3}
-  - {fileID: 1170744857039610, guid: afbfa7d0f636e0a4db9f7f5959f3399e, type: 3}
-  - {fileID: 0}
+  - {fileID: 7399318110109815184, guid: 961b96c769417104f89be67428fa637c, type: 3}
+  - {fileID: 7739575007440342425, guid: 25dba2c90d76e28458669760200d4bbb, type: 3}
+  - {fileID: 1391447784506006015, guid: cd734e008acaeb344b12833cd3491d47, type: 3}
   twrRangeEffect: {fileID: 3020813988628657187}
+  twrValueFStr: []
+  twrValueIStr:
+  - "\uB354\uBE14\uC0F7 \uD655\uB960"
   twrLayermask:
     serializedVersion: 2
     m_Bits: 32768

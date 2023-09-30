@@ -111,6 +111,9 @@ public class Monster : MonoBehaviour
 
             Destroy(this.gameObject);
         }
+        float val = ((mobCurHp / mobHp) * 0.5f) + 0.5f;
+        Debug.Log(mobCurHp / mobHp);
+        this.gameObject.transform.localScale = new Vector3(val, val, val);
     }
 
     private void OnTriggerEnter(Collider col)
@@ -159,14 +162,24 @@ public class Monster : MonoBehaviour
             }
         }
 
+        float hpper;
         //Debug.Log("--- 플레이어 아이덴티티와 몬스터 아이덴티티 겹치는 갯수 : " + identitySameCount);
-
+        if (twr.GetComponent<Tower>().twrType == 2)
+        {
+            hpper = mobCurHp * twr.GetComponent<Tower>().twrValueFloat[2];
+        }
+        else
+        {
+            hpper = 0;
+        }
         if (twr.GetComponent<Tower>().twrColor == mobColor)
         {
+            mobCurHp -= hpper;
             mobCurHp -= atk * 1.5f;
         }
         else
         {
+            mobCurHp -= hpper;
             mobCurHp -= atk;
         }
 

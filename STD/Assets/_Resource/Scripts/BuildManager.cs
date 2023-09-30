@@ -31,7 +31,7 @@ public class BuildManager : MonoBehaviour
 
             if (GameManager.gmInstance.gmMapNodes[GameManager.gmInstance.gmCurSelectNodeIndex].GetComponent<Node>().ndCurTower == null)
             {
-                GameObject tower = Instantiate(bmTowerList[bmTowerSelectNum], GameManager.gmInstance.gmMapNodes[GameManager.gmInstance.gmCurSelectNodeIndex].transform.position, Quaternion.identity) as GameObject;
+                GameObject tower = Instantiate(bmTowerList[Random.Range(0, 3)], GameManager.gmInstance.gmMapNodes[GameManager.gmInstance.gmCurSelectNodeIndex].transform.position, Quaternion.identity) as GameObject;
                 GameManager.gmInstance.gmMapNodes[GameManager.gmInstance.gmCurSelectNodeIndex].GetComponent<Node>().ndCurTower = tower;
                 tower.transform.SetParent(bmTowerParent.transform);
             }

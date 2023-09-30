@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     /// <summary> 노드를 선택할때 생성되는 이미지를 저장하기위한 GameObject </summary>
     public GameObject gmNodeSpriteParent;
     /// <summary> 맵에 있는 노드를 저장하기 위한 변수. </summary>
-    public GameObject[] gmMapNodes = new GameObject[45];
+    public GameObject[] gmMapNodes = new GameObject[100];
     public GameObject[] gmNodeType;
     /// <summary> 노드가 선택될때 생성될 이미지. </summary>
     [SerializeField] GameObject gmSelectSprite;
@@ -45,6 +46,13 @@ public class GameManager : MonoBehaviour
     public RotateToMouseScript gmRotateToMouses;
     Vector3 gmVecMouseDownPos;
 
+
+    private float Speed = 0.25f;
+    private Vector2 nowPos, prePos;
+    private Vector3 movePos;
+
+    public Camera camera;
+
     /// <summary> 생성한 노드 숫자를 저장하는 list 이다 중복 방지하기 위함. </summary>
     List<int> random = new List<int>();
 
@@ -53,6 +61,7 @@ public class GameManager : MonoBehaviour
     {
 
         gmSelectSpriteQuaternion = Quaternion.Euler(90f, 0, 0);
+
         if (gmInstance == null)
         {
             gmInstance = this;
@@ -82,6 +91,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         GmNodeSelectCheck();
+        test22();
     }
 
 
@@ -151,10 +161,10 @@ public class GameManager : MonoBehaviour
 
 #if UNITY_EDITOR
         // 마우스 클릭 시
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false)
 #else
         // 터치 시
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject() == false)
 #endif
         {
 
@@ -229,13 +239,32 @@ public class GameManager : MonoBehaviour
     public void testb()
     {
         int nums = random.Count;
-        GmCreateNodeNumber(4, 36);
-        StartCoroutine(GmCreateNode(nums, 0.65f));
+        GmCreateNodeNumber(4, 71);
+        StartCoroutine(GmCreateNode(nums, 0.45f));
 
         // for (int i = nums; i < random.Count; i++)
         // {
         //     GmCreateNodeTile(random[i], Random.Range(0, 4));
         // }
+    }
+
+    void test22()
+    {
+        if (Input.touchCount == 1)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                prePos = touch.position - touch.deltaPosition;
+            }
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                nowPos = touch.position - touch.deltaPosition;
+                movePos = (Vector3)(prePos - nowPos) * Time.deltaTime * Speed;
+                camera.transform.Translate(movePos);
+                prePos = touch.position - touch.deltaPosition;
+            }
+        }
     }
 
     IEnumerator GmCreateNode(int min, float wait)

@@ -13,7 +13,7 @@ public class TowerUI : MonoBehaviour
 
     int tuTowerLevel;
     int tuTowerAbility1;
-    bool[] tuTowerAbilityCheck = new bool[4];
+    bool[] tuTowerAbilityCheck = new bool[5];
     float tuTowerCurExp;
     float tuTowerMaxExp;
 
@@ -61,7 +61,7 @@ public class TowerUI : MonoBehaviour
             tuTowerInfoValueUI[0].GetComponent<TextMeshProUGUI>().text = "" + tuTowerAtk;
             tuTowerInfoValueUI[1].GetComponent<TextMeshProUGUI>().text = "" + tuTowerRange;
             tuTowerInfoValueUI[2].GetComponent<TextMeshProUGUI>().text = tuTowerAtkSpeed + " / 1 sec";
-            tuTowerInfoValueUI[3].GetComponent<TextMeshProUGUI>().text = tuTowerAbility1 + " %";
+
 
             tuTowerUpgradeLevelUI.GetComponent<TextMeshProUGUI>().text = tuTowerUpgradeLevel + " LV";
             tuTowerUpgradeUI.GetComponent<TextMeshProUGUI>().text = "" + tuTowerUpgradeGold;
@@ -83,7 +83,23 @@ public class TowerUI : MonoBehaviour
         tuTowerAtk = tuTargetTower.GetComponent<Tower>().twrCurAtk;
         tuTowerRange = tuTargetTower.GetComponent<Tower>().twrCurRange;
         tuTowerAtkSpeed = tuTargetTower.GetComponent<Tower>().twrCurAtkCoolTime;
-        tuTowerAbility1 = tuTargetTower.GetComponent<Tower>().twrDoubleShootChance;
+
+        if (tuTargetTower.GetComponent<Tower>().twrType == 0)
+        {
+            tuTowerInfoValueUI[3].GetComponent<TextMeshProUGUI>().text = tuTargetTower.GetComponent<Tower>().twrValueInt[0] + " %";
+            tuTowerInfoText[3] = tuTargetTower.GetComponent<Tower>().twrValueIStr[0];
+        }
+        else if (tuTargetTower.GetComponent<Tower>().twrType == 2)
+        {
+            tuTowerInfoValueUI[3].GetComponent<TextMeshProUGUI>().text = tuTargetTower.GetComponent<Tower>().twrValueFloat[0] + " %";
+            tuTowerInfoValueUI[4].GetComponent<TextMeshProUGUI>().text = tuTargetTower.GetComponent<Tower>().twrValueFloat[1] * 100 + " %";
+            tuTowerInfoValueUI[5].GetComponent<TextMeshProUGUI>().text = tuTargetTower.GetComponent<Tower>().twrValueFloat[2] * 100 + " %";
+
+            tuTowerInfoText[3] = tuTargetTower.GetComponent<Tower>().twrValueFStr[0];
+            tuTowerInfoText[4] = tuTargetTower.GetComponent<Tower>().twrValueFStr[1];
+            tuTowerInfoText[5] = tuTargetTower.GetComponent<Tower>().twrValueFStr[2];
+        }
+
         //tuTowerLevel = tuTargetTower.GetComponent<Tower>().twrLevel;
         tuTowerUpgradeLevel = tuTargetTower.GetComponent<Tower>().twrUpgradeLevel;
         tuTowerCurExp = tuTargetTower.GetComponent<Tower>().twrCurExp;
@@ -132,6 +148,15 @@ public class TowerUI : MonoBehaviour
             tuTowerInfoUI[6].SetActive(false);
         }
 
+        if (tuTowerAbilityCheck[4])
+        {
+            tuTowerInfoUI[7].SetActive(true);
+        }
+        else
+        {
+            tuTowerInfoUI[7].SetActive(false);
+        }
+
         tuTowerExpSlider.maxValue = tuTowerMaxExp;
     }
 
@@ -144,5 +169,8 @@ public class TowerUI : MonoBehaviour
     public void TUColorChange()
     {
         tuTargetTower.GetComponent<Tower>().twrColor = Random.Range(0, 5);
+        tuTargetTower.GetComponent<Tower>().TowerUpdate();
     }
+
+
 }
