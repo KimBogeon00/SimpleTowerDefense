@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Monster : MonoBehaviour
 {
-    /// <summary> 몬스터가 이동할 웨이포인트 저장하기 위한 변수. </summary>
+
     [Header(" [ Int ]")]
-    public int[] mobWayPointSave;
-    public int mobType;
+    public int mobType; // 몬스터 타입 0 기본 1 보스
     /// <summary> 
     /// <para>0 RED  </para>
     /// <para>1 GREEN  </para>
@@ -17,9 +17,9 @@ public class Monster : MonoBehaviour
     /// <para>4 PURPLE  </para>
     ///</summary>
     public int mobColor;
-    [SerializeField] int mobCurWayPoint;
-    public int mobWeightValue;
-    public int mobGold;
+    public int mobGold; // 몬스터 처치시 획득할 골드량
+    public int mobWayType; // 몬스터 이동경로 타입
+    public int mobSpawnType; // 몬스터 스폰 타입
 
     [Space(20f)]
     [Header(" [ Float ]")]
@@ -30,8 +30,6 @@ public class Monster : MonoBehaviour
     public float mobExp;
 
     public float mobDeadTime;
-    public float mobHpWeight;
-    public float mobSpeedWeight;
 
     [Space(20f)]
     [Header(" [ Bool ]")]
@@ -43,7 +41,10 @@ public class Monster : MonoBehaviour
     [Header(" [ GameObject ]")]
     [SerializeField] GameObject mobMapWayPointParent;
     [SerializeField] GameObject mobAttacktoTower;
-
+    [SerializeField] GameObject mobMoveCount;
+    [SerializeField] GameObject mobThis;
+    [SerializeField] GameObject mobBossHpText;
+    [SerializeField] GameObject mobBossMoveText;
 
     /// <summary> 맵에 있는 웨이포인트를 저장하기 위한 변수. </summary>
     public GameObject[] mobWayPoints = new GameObject[29];
@@ -62,12 +63,20 @@ public class Monster : MonoBehaviour
     [SerializeField] Sprite[] mobIdentityImageList = new Sprite[13];
 
     public List<int> mobIdentityIndex = new List<int>();
+
+    /// <summary> 몬스터가 이동할 웨이포인트 저장하기 위한 변수. </summary>
+    public List<int> mobWayPointSave = new List<int>();
     // Start is called before the first frame update
     void Start()
     {
         mobMapWayPointParent = GameObject.FindWithTag("MapWayPointParent"); // MapWayPointParent 테그를 찾아서 mobMapWayPointParent 에 대입.
-        mobCurWayPoint = 0; // 웨이포인트 0번 부터 시작.
         mobCurHp = mobHp;  // hp 초기화
+        if (mobType == 1) // 몬스터가 보스일 경우 . // 
+        {
+            mobHpSlider = GameObject.Find("BossUI").GetComponent<Slider>();
+            mobBossHpText = GameObject.Find("BossUISlider_Text");
+            mobBossMoveText = GameObject.Find("BossUIMove_Text");
+        }
         mobHpSlider.maxValue = mobHp;
         mobHpSliderFillImage.sprite = mobSliderImage[mobColor];
 
@@ -85,6 +94,9 @@ public class Monster : MonoBehaviour
             mobWayPoints[i] = mobMapWayPointParent.transform.GetChild(i).gameObject;
         }
 
+        MonsterMove(mobSpawnType, Random.Range(0, 2));
+
+
     }
 
     // Update is called once per frame
@@ -93,12 +105,22 @@ public class Monster : MonoBehaviour
     {
         mobDeadTime += Time.deltaTime;
         // 몬스터가 알아서 이동할수있게 해줌.
-        this.transform.position = Vector3.MoveTowards(this.transform.position, mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position, mobSpeed * Time.deltaTime);
+        this.transform.position = Vector3.MoveTowards(this.transform.position, mobWayPoints[mobWayPointSave[0]].transform.position, mobSpeed * Time.deltaTime);
         // 몬스터가 이동할때 목표물을 바라보면서 이동할수있게 해줌.
-        mobLookPos = new Vector3((mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position).x, this.transform.position.y, (mobWayPoints[mobWayPointSave[mobCurWayPoint]].transform.position).z);
+        mobLookPos = new Vector3((mobWayPoints[mobWayPointSave[0]].transform.position).x, this.transform.position.y,
+        (mobWayPoints[mobWayPointSave[0]].transform.position).z);
 
         transform.LookAt(mobLookPos);
         mobHpSlider.value = mobCurHp;
+        if (mobType == 1) // 몬스터가 보스일 경우 . // 
+        {
+            mobBossHpText.GetComponent<TextMeshProUGUI>().text = mobCurHp + " / " + mobHp;
+            mobBossMoveText.GetComponent<TextMeshProUGUI>().text = "" + mobWayPointSave.Count;
+        }
+        else if (mobType == 0)
+        {
+            mobMoveCount.GetComponent<TextMeshProUGUI>().text = "" + mobWayPointSave.Count;
+        }
 
         if (mobCurHp <= 0)
         {
@@ -108,38 +130,63 @@ public class Monster : MonoBehaviour
             GameManager.gmInstance.gmGold += mobGold;
             MonsterStudy.msInstance.msMonsterDeadTime[mobColor] += mobDeadTime;
             MonsterStudy.msInstance.msMonsterDeadCount[mobColor] += 1;
-
             Destroy(this.gameObject);
         }
         float val = ((mobCurHp / mobHp) * 0.5f) + 0.5f;
-        Debug.Log(mobCurHp / mobHp);
-        this.gameObject.transform.localScale = new Vector3(val, val, val);
+        //Debug.Log(mobCurHp / mobHp);
+        mobThis.transform.localScale = new Vector3(val, val, val);
     }
 
     private void OnTriggerEnter(Collider col)
     {
-        if (mobWayPointSave[mobCurWayPoint] == 0)
+        if (mobWayPointSave.Count > 0)
         {
-            StageManager.smInstance.smMonsterKillCount += 1;
-            MonsterStudy.msInstance.msMonsterDeadTime[mobColor] += mobDeadTime;
-            MonsterStudy.msInstance.msMonsterDeadCount[mobColor] += 1;
-            Destroy(this.gameObject);
-        }
-        if (col.gameObject == mobWayPoints[mobWayPointSave[mobCurWayPoint]])
-        {
-            if (mobWayPointSave.Length > mobCurWayPoint)
+            if (mobWayPointSave[0] == 0)
+            {
+                StageManager.smInstance.smMonsterKillCount += 1;
+                MonsterStudy.msInstance.msMonsterDeadTime[mobColor] += mobDeadTime;
+                MonsterStudy.msInstance.msMonsterDeadCount[mobColor] += 1;
+                Destroy(this.gameObject);
+            }
+
+
+            if (col.gameObject == mobWayPoints[mobWayPointSave[0]])
             {
                 if (mobMoveCheck == false)
                 {
-                    if (mobWayPointSave[mobCurWayPoint] == 28)
+                    if (mobWayPointSave.Count == 0)
                     {
                         Destroy(this.gameObject);
                     }
                     StartCoroutine("MonsterMoveWait", 0.1f);
                     mobMoveCheck = true;
                 }
+
             }
         }
+        // if (mobWayPointSave[mobCurWayPoint] == 0)
+        // {
+        //     StageManager.smInstance.smMonsterKillCount += 1;
+        //     MonsterStudy.msInstance.msMonsterDeadTime[mobColor] += mobDeadTime;
+        //     MonsterStudy.msInstance.msMonsterDeadCount[mobColor] += 1;
+        //     Destroy(this.gameObject);
+        // }
+
+        // if (col.gameObject == mobWayPoints[mobWayPointSave[mobCurWayPoint]])
+        // {
+        //     if (mobWayPointSave.Count > mobCurWayPoint)
+        //     {
+        //         if (mobMoveCheck == false)
+        //         {
+        //             if (mobWayPointSave[mobCurWayPoint] == 28)
+        //             {
+        //                 Destroy(this.gameObject);
+        //             }
+        //             StartCoroutine("MonsterMoveWait", 0.1f);
+        //             mobMoveCheck = true;
+        //         }
+        //     }
+        // }
     }
 
     public void RotateToMouse(GameObject obj, Vector3 destination)
@@ -147,6 +194,151 @@ public class Monster : MonoBehaviour
         direction = destination - obj.transform.position;
         rotation = Quaternion.LookRotation(direction);
         obj.transform.localRotation = Quaternion.Lerp(obj.transform.rotation, rotation, 1);
+    }
+
+    public void MonsterMove(int spawntype, int waytype)
+    {
+        switch (spawntype)
+        {
+            case 0:
+                if (waytype == 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(2);
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(4);
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(6);
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(8);
+                    }
+                    mobWayPointSave.Add(1);
+                    mobWayPointSave.Add(0);
+                }
+                else if (waytype == 1)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(8);
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(6);
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(4);
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(2);
+                    }
+                    mobWayPointSave.Add(1);
+                    mobWayPointSave.Add(0);
+                }
+                break;
+            case 1:
+                if (waytype == 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(4);
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(6);
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(8);
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(2);
+                    }
+                    mobWayPointSave.Add(3);
+                    mobWayPointSave.Add(0);
+                }
+                else if (waytype == 1)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(2);
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(8);
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(6);
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(4);
+                    }
+                    mobWayPointSave.Add(3);
+                    mobWayPointSave.Add(0);
+                }
+                break;
+            case 2:
+                if (waytype == 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(6);
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(8);
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(2);
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(4);
+                    }
+                    mobWayPointSave.Add(5);
+                    mobWayPointSave.Add(0);
+                }
+                else if (waytype == 1)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(4);
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(2);
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(8);
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(6);
+                    }
+                    mobWayPointSave.Add(5);
+                    mobWayPointSave.Add(0);
+                }
+                break;
+            case 3:
+                if (waytype == 0)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(8);
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(2);
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(4);
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(6);
+                    }
+                    mobWayPointSave.Add(7);
+                    mobWayPointSave.Add(0);
+                }
+                else if (waytype == 1)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        mobWayPointSave.Add(7);
+                        mobWayPointSave.Add(6);
+                        mobWayPointSave.Add(5);
+                        mobWayPointSave.Add(4);
+                        mobWayPointSave.Add(3);
+                        mobWayPointSave.Add(2);
+                        mobWayPointSave.Add(1);
+                        mobWayPointSave.Add(8);
+                    }
+                    mobWayPointSave.Add(7);
+                    mobWayPointSave.Add(0);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     public void MonsterHit(float atk, List<int> identity, GameObject twr)
@@ -240,7 +432,8 @@ public class Monster : MonoBehaviour
     IEnumerator MonsterMoveWait(float sec)
     {
         yield return new WaitForSecondsRealtime(sec);
-        mobCurWayPoint += 1;
+        mobWayPointSave.RemoveAt(0);
+        //mobCurWayPoint += 1;
         mobMoveCheck = false;
     }
 }

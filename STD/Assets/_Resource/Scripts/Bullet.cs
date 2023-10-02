@@ -104,18 +104,20 @@ public class Bullet : MonoBehaviour
                     if (hitPrefab != null && target != null)
                     {
                         var hitVFX = Instantiate(hitPrefab, target.transform.position, Quaternion.identity) as GameObject;
-
-                        var ps = hitVFX.GetComponent<ParticleSystem>();
-                        if (ps == null)
-                        {
-                            var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
-                            Destroy(hitVFX, psChild.main.duration);
-                        }
-                        else
-                            Destroy(hitVFX, ps.main.duration);
+                        Destroy(hitVFX, 0.5f);
+                        // var ps = hitVFX.GetComponent<ParticleSystem>();
+                        // if (ps == null)
+                        // {
+                        //     var psChild = hitVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+                        //     Destroy(hitVFX, psChild.main.duration);
+                        // }
+                        // else
+                        //     Destroy(hitVFX, ps.main.duration);
                     }
 
-                    StartCoroutine(DestroyParticle(0f));
+                    Destroy(this.gameObject);
+
+                    //StartCoroutine(DestroyParticle(0f));
                 }
             }
             // else

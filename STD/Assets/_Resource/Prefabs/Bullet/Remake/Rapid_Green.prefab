@@ -162,7 +162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6124700781948023286
 Transform:
   m_ObjectHideFlags: 0
@@ -5043,7 +5043,7 @@ Transform:
   - {fileID: 6124700781948023286}
   - {fileID: 1435106488340180957}
   m_Father: {fileID: 0}
-  m_RootOrder: 30
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4338602078301036687
 MonoBehaviour:
@@ -5068,7 +5068,7 @@ MonoBehaviour:
   hitPrefab: {fileID: 1801918589960200, guid: 6953498a5ce2ecb4eaa9390c957cbe80, type: 3}
   trails:
   - {fileID: 2152079964330006465}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0.2, z: 0}
   rotateToMouse: {fileID: 0}
   tower: {fileID: 0}
   identity: 

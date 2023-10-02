@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,7 +24,10 @@ public class GameManager : MonoBehaviour
     public float[] gmMobHpWeights = new float[3];
     public float[] gmMobSpeedWeights = new float[3];
 
-
+    [SerializeField] float fps;
+    [SerializeField] float ms;
+    float deltaTime;
+    [SerializeField] GameObject gmFPS;
 
 
     /// <summary> 노드 부모를 저장하기 위한 변수. </summary>
@@ -92,9 +96,33 @@ public class GameManager : MonoBehaviour
     {
         GmNodeSelectCheck();
         test22();
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        fps_();
     }
 
+    void fps_()
+    {
+        fps = 1.0f / deltaTime;
+        ms = deltaTime * 1000.0f;
+        string text = string.Format("({1:0.} ms) {0:0.0} fps", fps, ms);
+        if (fps > 50)
+        {
+            gmFPS.transform.GetComponent<TextMeshProUGUI>().text = "<color=#0000FF>" + text + "</color>";
+        }
+        else if (fps > 40)
+        {
+            gmFPS.transform.GetComponent<TextMeshProUGUI>().text = "<color=#9400D3>" + text + "</color>";
+        }
+        else if (fps > 30)
+        {
+            gmFPS.transform.GetComponent<TextMeshProUGUI>().text = "<color=#87CEFA>" + text + "</color>";
+        }
+        else
+        {
+            gmFPS.transform.GetComponent<TextMeshProUGUI>().text = "<color=#FF0000>" + text + "</color>";
+        }
 
+    }
 
     public void WeightUpdate()
     {
@@ -164,7 +192,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && EventSystem.current.IsPointerOverGameObject() == false)
 #else
         // 터치 시
-        if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject() == false)
+        if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(0) == false)
 #endif
         {
 

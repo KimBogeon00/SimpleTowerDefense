@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using TMPro;
+
+using Random = UnityEngine.Random;
 
 public class StageManager : MonoBehaviour
 {
@@ -9,12 +13,9 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] int[] smMonsterColorCount = new int[5];
     public int smCurStageIndex;
-
+    public int smBossCheck; // 0 x / 1 o 
     public int smMonsterTotalCount;
     public int smMonsterCount;
-    public int smMonsterCountTypeI;
-    public int smMonsterCountTypeII;
-    public int smMonsterCountTypeIII;
     public int[] smSpawnMonster = new int[5];
     public int smWeightI;
     public int smWeightII;
@@ -35,7 +36,13 @@ public class StageManager : MonoBehaviour
     [Header(" [ GameObject ]")]
     public GameObject smStageData;
     public GameObject[] smMonsterList = new GameObject[10];
-    public GameObject smSpawnPoint;
+    public GameObject[] smSpawnPoint;
+    [SerializeField] GameObject[] smInfoUI;
+    [SerializeField] GameObject smMonsterParent;
+    [SerializeField] GameObject smBossUI;
+
+    [SerializeField] DateTime smStartTime;
+    [SerializeField] TimeSpan smElapseTime;
 
     List<int> smIdentityIndex = new List<int>();
     List<int> smMonsterSpawnColor = new List<int>();
@@ -54,6 +61,7 @@ public class StageManager : MonoBehaviour
         smCurStageIndex = 1;
         smStageData = GameObject.FindWithTag("StageData");
         Invoke("StageStart", 3.0f);
+
     }
 
     // Update is called once per frame
@@ -61,7 +69,7 @@ public class StageManager : MonoBehaviour
     {
         if (smStageCheck)
         {
-            if (smMonsterTotalCount == smMonsterKillCount)
+            if (smMonsterTotalCount <= smMonsterKillCount)
             {
                 smStageEnd = true;
                 smCurStageIndex += 1;
@@ -70,24 +78,54 @@ public class StageManager : MonoBehaviour
                 Invoke("StageStart", 5.0f);
             }
         }
+        smElapseTime = smStartTime - DateTime.Now;
+        smInfoUI[0].GetComponent<TextMeshProUGUI>().text = "" + smMonsterKillCount;
+        smInfoUI[1].GetComponent<TextMeshProUGUI>().text = "" + smMonsterTotalCount;
+        smInfoUI[2].GetComponent<TextMeshProUGUI>().text = "" + smElapseTime.ToString(@"mm\:ss");
+        smInfoUI[3].GetComponent<TextMeshProUGUI>().text = "Stage :" + smCurStageIndex;
 
     }
     public void StageStart()
     {
+        smMonsterKillCount = 0;
+        if (smCurStageIndex == 1)
+        {
+            smStartTime = DateTime.Now;
+        }
         StageDataLoad();
         smStageCheck = false;
         smMonsterTotalCount = 0;
-        for (int i = 0; i < 5; i++)
+        if (smBossCheck == 1)
         {
-            smMonsterColorCount[i] = ((int)((MonsterStudy.msInstance.msColorWeight[i] * 0.01) * smMonsterCount));
-            smMonsterTotalCount += smMonsterColorCount[i];
+            smBossUI.SetActive(true);
+            int spawnpoint = Random.Range(0, 4);
+            GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
+            monsterR.GetComponent<Monster>().mobHp = smMonsterHp;
+            monsterR.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
+            monsterR.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
+            monsterR.GetComponent<Monster>().mobType = 1;
+            monsterR.GetComponent<Monster>().mobColor = 0;
+            monsterR.GetComponent<Monster>().mobSpawnType = spawnpoint;
+            smMonsterTotalCount = 1;
+
+            monsterR.transform.SetParent(smMonsterParent.transform);
+            smStageCheck = true;
         }
-        StartCoroutine(MonsterSpawn(0.8f));
+        else if (smBossCheck == 0)
+        {
+            smBossUI.SetActive(false);
+            for (int i = 0; i < 5; i++)
+            {
+                smMonsterColorCount[i] = ((int)((MonsterStudy.msInstance.msColorWeight[i] * 0.01) * smMonsterCount));
+                smMonsterTotalCount += smMonsterColorCount[i];
+            }
+            StartCoroutine(MonsterSpawn(0.5f));
+        }
     }
 
     public void StageDataLoad()
     {
-        (smMonsterHp, smMonsterSpeed, smMonsterCount, smSpawnMonster, smWeightI, smWeightII, smWeightIII) = smStageData.GetComponent<StageData>().GetData(smCurStageIndex);
+        (smBossCheck, smMonsterHp, smMonsterSpeed, smMonsterCount, smSpawnMonster, smWeightI, smWeightII, smWeightIII) = smStageData.GetComponent<StageData>().GetData(smCurStageIndex);
 
         if (smWeightI >= Random.Range(0, 1000))
         {
@@ -150,62 +188,78 @@ public class StageManager : MonoBehaviour
         {
             if (val[0] != 0)
             {
-                GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint.transform.position, Quaternion.identity) as GameObject;
+                int spawnpoint = Random.Range(0, 4);
+                GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterR.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterR.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterR.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
                 monsterR.GetComponent<Monster>().mobType = 0;
                 monsterR.GetComponent<Monster>().mobColor = 0;
+                monsterR.GetComponent<Monster>().mobSpawnType = spawnpoint;
+                monsterR.transform.SetParent(smMonsterParent.transform);
                 val[0] -= 1;
                 yield return new WaitForSecondsRealtime(spawndelay);
             }
             if (val[1] != 0)
             {
-                GameObject monsterG = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint.transform.position, Quaternion.identity) as GameObject;
+                int spawnpoint = Random.Range(0, 4);
+                GameObject monsterG = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterG.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterG.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterG.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
                 monsterG.GetComponent<Monster>().mobType = 0;
                 monsterG.GetComponent<Monster>().mobColor = 1;
+                monsterG.GetComponent<Monster>().mobSpawnType = spawnpoint;
+                monsterG.transform.SetParent(smMonsterParent.transform);
                 val[1] -= 1;
                 yield return new WaitForSecondsRealtime(spawndelay);
             }
             if (val[2] != 0)
             {
-                GameObject monsterB = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint.transform.position, Quaternion.identity) as GameObject;
+                int spawnpoint = Random.Range(0, 4);
+                GameObject monsterB = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterB.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterB.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterB.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
                 monsterB.GetComponent<Monster>().mobType = 0;
                 monsterB.GetComponent<Monster>().mobColor = 2;
+                monsterB.GetComponent<Monster>().mobSpawnType = spawnpoint;
+                monsterB.transform.SetParent(smMonsterParent.transform);
                 val[2] -= 1;
                 yield return new WaitForSecondsRealtime(spawndelay);
             }
             if (val[3] != 0)
             {
-                GameObject monsterO = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint.transform.position, Quaternion.identity) as GameObject;
+                int spawnpoint = Random.Range(0, 4);
+                GameObject monsterO = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterO.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterO.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterO.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
                 monsterO.GetComponent<Monster>().mobType = 0;
                 monsterO.GetComponent<Monster>().mobColor = 3;
+                monsterO.GetComponent<Monster>().mobSpawnType = spawnpoint;
+                monsterO.transform.SetParent(smMonsterParent.transform);
                 val[3] -= 1;
                 yield return new WaitForSecondsRealtime(spawndelay);
             }
             if (val[4] != 0)
             {
-                GameObject monsterP = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint.transform.position, Quaternion.identity) as GameObject;
+                int spawnpoint = Random.Range(0, 4);
+                GameObject monsterP = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterP.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterP.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterP.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
                 monsterP.GetComponent<Monster>().mobType = 0;
                 monsterP.GetComponent<Monster>().mobColor = 4;
+                monsterP.GetComponent<Monster>().mobSpawnType = spawnpoint;
+                monsterP.transform.SetParent(smMonsterParent.transform);
                 val[4] -= 1;
                 yield return new WaitForSecondsRealtime(spawndelay);
             }
 
 
         }
+
         // for (int j = 0; j < 5; j++)
         // {
         //     for (int i = 0; i < smMonsterColorCount[j]; i++) // A 타입 ( 노말 몬스터 . )

@@ -5025,7 +5025,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7113754665956862089
 Transform:
   m_ObjectHideFlags: 0
@@ -9798,7 +9798,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 278e580a216a1c04e97ca368ab7ca078, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9916,7 +9915,7 @@ MonoBehaviour:
   - {fileID: 7742932468648909301}
   - {fileID: 6038556742766909998}
   - {fileID: 1744699798874782255}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0.2, z: 0}
   rotateToMouse: {fileID: 0}
   tower: {fileID: 0}
   identity: 
@@ -10862,7 +10861,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 1
     gravitySource: 0
-    maxNumParticles: 40
+    maxNumParticles: 15
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -15030,7 +15029,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 278e580a216a1c04e97ca368ab7ca078, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

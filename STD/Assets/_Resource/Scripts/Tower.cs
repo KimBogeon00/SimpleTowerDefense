@@ -62,6 +62,7 @@ public class Tower : MonoBehaviour
     public GameObject twrCloseTarget; // 타워에서 가장 가까운 적.
     public GameObject[] twrBullet; // 타워가 발사할수있는 총알.
     public GameObject twrRangeEffect;
+    public GameObject twrBulletParent;
 
     // [Space(20f)]
     [Header(" [ Others ]")]
@@ -77,6 +78,7 @@ public class Tower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        twrBulletParent = GameObject.Find("BulletParent");
         for (int i = 1; i < 11; i++)
         {
             twrNeedExp[i] = i * 100;
@@ -199,6 +201,7 @@ public class Tower : MonoBehaviour
                     twrbullet0_0.GetComponent<Bullet>().bulletAtk = twrCurAtk;
                     twrbullet0_0.GetComponent<Bullet>().identity = twrIdentity;
                     twrbullet0_0.GetComponent<Bullet>().tower = this.gameObject;
+                    twrbullet0_0.transform.SetParent(twrBulletParent.transform);
                 }
                 if (twrValueInt[0] > Random.Range(0, 101) && twrCloseTarget != null)
                 {
@@ -208,6 +211,7 @@ public class Tower : MonoBehaviour
                     twrbullet0_1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
                     twrbullet0_1.GetComponent<Bullet>().identity = twrIdentity;
                     twrbullet0_1.GetComponent<Bullet>().tower = this.gameObject;
+                    twrbullet0_1.transform.SetParent(twrBulletParent.transform);
                 }
                 break;
             case 1:
@@ -225,6 +229,7 @@ public class Tower : MonoBehaviour
                     twrbullet2_0.GetComponent<Bullet>().bulletAtk = twrCurAtk * twrValueFloat[1];
                     twrbullet2_0.GetComponent<Bullet>().identity = twrIdentity;
                     twrbullet2_0.GetComponent<Bullet>().tower = this.gameObject;
+                    twrbullet2_0.transform.SetParent(twrBulletParent.transform);
                 }
                 else if (twrCloseTarget != null)
                 {
@@ -233,6 +238,7 @@ public class Tower : MonoBehaviour
                     twrbullet2_1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
                     twrbullet2_1.GetComponent<Bullet>().identity = twrIdentity;
                     twrbullet2_1.GetComponent<Bullet>().tower = this.gameObject;
+                    twrbullet2_1.transform.SetParent(twrBulletParent.transform);
                 }
                 break;
             default:
@@ -345,6 +351,7 @@ public class Tower : MonoBehaviour
                     twrbullet1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
                     twrbullet1.GetComponent<Bullet>().identity = twrIdentity;
                     twrbullet1.GetComponent<Bullet>().tower = this.gameObject;
+                    twrbullet1.transform.SetParent(twrBulletParent.transform);
                 }
             }
             yield return new WaitForSecondsRealtime(0.05f);
