@@ -38,6 +38,7 @@ public class Bullet : MonoBehaviour
             var muzzleVFX = Instantiate(muzzlePrefab, transform.position, Quaternion.identity);
             muzzleVFX.transform.forward = gameObject.transform.forward + offset;
             var ps = muzzleVFX.GetComponent<ParticleSystem>();
+            Destroy(muzzleVFX, 0.5f);
             if (ps != null)
                 Destroy(muzzleVFX, ps.main.duration);
             else
@@ -47,7 +48,7 @@ public class Bullet : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject, 5.0f);
+        Destroy(this.gameObject, 3.0f);
     }
 
     void FixedUpdate()

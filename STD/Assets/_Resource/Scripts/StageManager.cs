@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using DG.Tweening;
 
 using Random = UnityEngine.Random;
 
@@ -46,6 +47,8 @@ public class StageManager : MonoBehaviour
 
     List<int> smIdentityIndex = new List<int>();
     List<int> smMonsterSpawnColor = new List<int>();
+
+    Sequence stageTextSeq;
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +77,7 @@ public class StageManager : MonoBehaviour
                 smStageEnd = true;
                 smCurStageIndex += 1;
                 smIdentityIndex.Clear();
+                smInfoUI[3].transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 1.0f, 1, 0.1f);
                 smMonsterKillCount = 0;
                 Invoke("StageStart", 5.0f);
             }

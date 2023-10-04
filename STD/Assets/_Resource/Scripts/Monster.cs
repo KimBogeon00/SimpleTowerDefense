@@ -27,8 +27,6 @@ public class Monster : MonoBehaviour
     public float mobHp;
     public float mobCurHp;
     public float mobSpeed;
-    public float mobExp;
-
     public float mobDeadTime;
 
     [Space(20f)]
