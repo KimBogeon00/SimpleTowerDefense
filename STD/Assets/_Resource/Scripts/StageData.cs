@@ -7,45 +7,42 @@ using System.IO;
 [System.Serializable]
 public class Stage
 {
-    public int stageIndex;
-    public int stageBossCheck;
+    public int sdStageIndex;
+    public int sdBossCheck;
     // 몬스터 Hp
-    public float stageMonsterHp;
-    public float stageMonsterSpeed;
-    public int stageMonsterCount;
-    // Tpye 1 몬스터가 스폰될 숫자.
-    public int stageMonsterCountTypeI;
-    // Tpye 2 몬스터가 스폰될 숫자.
-    public int stageMonsterCountTypeII;
-    // Tpye 3 몬스터가 스폰될 숫자.
-    public int stageMonsterCountTypeIII;
+    public float sdMonsterHp;
+    public float sdMonsterSpeed;
+    public int sdMonsterCount;
     // 어느 몬스터를 스폰할지, 스폰될 몬스터 index를 저장함.
-    public int[] stageSpawnMonster = new int[5];
+    public int sdSpawnmonster;
     /*
     몬스터 속성시스템. 
     스테이지 별로 가중치 1 2 3 에 따라서
     몬스터마다 최소 0 개 최대 3개의 속성을 부여받음.
     */
-    public int stageWeightI;
-    public int stageWeightII;
-    public int stageWeightIII;
+    public int sdageWeightI;
+    public int sdageWeightII;
+    public int sdageWeightIII;
 }
 public class StageData : MonoBehaviour
 {
     public class StageDataInfo
     {
-        public Stage[] stages;
+        public List<Stage> stages = new List<Stage>();
     }
 
-    public StageDataInfo st;
+    public StageDataInfo st = new StageDataInfo();
 
     void Start()
     {
-        TextAsset loadedJson = Resources.Load<TextAsset>("StageData");
-        st = JsonUtility.FromJson<StageDataInfo>(loadedJson.ToString());
+        // string loadData = File.ReadAllText(Application.persistentDataPath + "/stagedata");
+        //기존파일 sd 변수에 저장.
+        // st = JsonUtility.FromJson<StageDataInfo>(loadData);
+        TextAsset loadData = Resources.Load<TextAsset>("StageData");
+        st = JsonUtility.FromJson<StageDataInfo>(loadData.ToString());
 
 
-        Debug.Log(st.stages.Length);
+        Debug.Log(loadData);
     }
 
     // Update is called once per frame
@@ -56,17 +53,18 @@ public class StageData : MonoBehaviour
 
     /// <summary> 스테이지에 대한 index값을 넣으면 해당 스테이지의 정보를 보내주는 함수. </summary>
     /// <param name="index"> 스테이지 index값 입력. </param>
-    public (int, float, float, int, int[], int, int, int) GetData(int index)
+    public (int, float, float, int, int, int, int, int) GetData(int index)
     {
+        Debug.Log(st.stages.Count);
         return (
-        st.stages[index].stageBossCheck,
-        st.stages[index].stageMonsterHp,
-        st.stages[index].stageMonsterSpeed,
-        st.stages[index].stageMonsterCount,
-        st.stages[index].stageSpawnMonster,
-        st.stages[index].stageWeightI,
-        st.stages[index].stageWeightII,
-        st.stages[index].stageWeightIII);
+        st.stages[index].sdBossCheck,
+        st.stages[index].sdMonsterHp,
+        st.stages[index].sdMonsterSpeed,
+        st.stages[index].sdMonsterCount,
+        st.stages[index].sdSpawnmonster,
+        st.stages[index].sdageWeightI,
+        st.stages[index].sdageWeightII,
+        st.stages[index].sdageWeightIII);
     }
 
 }

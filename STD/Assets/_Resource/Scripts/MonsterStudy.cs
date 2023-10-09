@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class MonsterStudy : MonoBehaviour
 {
@@ -31,7 +32,7 @@ public class MonsterStudy : MonoBehaviour
         if (msInstance == null)
         {
             msInstance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -88,10 +89,19 @@ public class MonsterStudy : MonoBehaviour
                 msColorMin = i;
             }
         }
-        if (msColorWeight[msColorMax] > 10 && msColorWeight[msColorMin] < 30)
+        if (msColorWeight[msColorMax] > 5 && msColorWeight[msColorMin] < 40)
         {
             msColorWeight[msColorMax] -= 1;
+            msMonsterWeightText[msColorMax].transform.DOPunchScale(new Vector3(1.5f, 1.5f, 1.5f), 0.5f, 1, 0.2f).SetEase(Ease.OutQuad);
             msColorWeight[msColorMin] += 1;
+            msMonsterWeightText[msColorMin].transform.DOPunchScale(new Vector3(1.5f, 1.5f, 1.5f), 0.5f, 1, 0.2f).SetEase(Ease.OutQuad);
+
+            /*RM_ErrorMessage.transform.DOPunchRotation(new Vector3(0, 0, 10), 0.5f, 30, 90).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+
+            RM_ErrorMessage.SetActive(false);
+        });
+        */
         }
 
         for (int i = 0; i < 5; i++)

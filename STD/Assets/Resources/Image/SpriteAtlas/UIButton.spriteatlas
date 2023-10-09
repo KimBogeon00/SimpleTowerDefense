@@ -1,0 +1,147 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIButton
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 2c6d2de45f213fc4aa90804ed024a2ae, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 59f54ee0e2ad04fd58ac87ab41462ec1: 21300000
+    - 49b656f08247a45a090728be5f256e25: 21300000
+    - 3cd51dd1799824a7695df3daa9a8805c: 21300000
+    - 6b27a53239b274a72ad2175c60269281: 21300000
+    - d0282ac2dff0ab4459bdefc13e09e916: 21300000
+    - ae2b7ff3ef06844fc9854cfe7b1b10ad: 21300000
+    - 32f70564739ce4b338361493fd7e53f4: 21300000
+    - b02caed49f77549d68353cfcd2234daf: 21300000
+    - d69eea352a05343de8f51cb6f66b7501: 21300000
+    - a508fa5583c824dd78ef0a4816408a73: 21300000
+    - 2d1b75c53af17432a99d4832de6bf665: 21300000
+    - adf823d50b7a343eb85d90d72e71255e: 21300000
+    - db3a71f534acf4c4086c40531b2b4c5f: 21300000
+    - 14c084a6418c74f758ee93b533195965: 21300000
+    - 03f44f379884741bcbc6be63e1b1c9fb: 21300000
+    - e36ce877600bc4c95b947c24d30bcadd: 21300000
+    - 585301c8b46b14032bb0814cf4e161ea: 21300000
+    - 257535799f80b4693a4c361faba5aa09: 21300000
+    - 911ac4e9a6fdd6e408c8078d409c6248: 21300000
+    - f3e0129a36f2c4f24ad6d69982ed2b4c: 21300000
+    - 26c5363b93a9e7d4abce166fc819209c: 21300000
+    - a3121c7c6dddd46008edd91dd912965b: 21300000
+    - a1e4b5bc51b80445fb7a5aef805c1dfe: 21300000
+    - 443b51ecb6cdf4e7ba7790f534ddc001: 21300000
+    - 5169ccecc02f44701996183b564d44f5: 21300000
+    - dfc8586df172d464e95feb9ca1f8a2f1: 21300000
+    - f137091e992a84beb9749cbb61469d7f: 21300000
+    - 8601463e54c964e978d8c7855ba3c1ed: 21300000
+    - e19d7fbe86dd549b78397eb49b791463: 21300000
+    - 03d80f0f8a6814d90b18daa7cc82d5a5: 21300000
+    - 557f116f1cb8d49b7987812bcf480a1e: 21300000
+    - d4f2528fff10ac743900483c37de282a: 21300000
+    - 98f0688fb90e84c9d9de891e4530a86b: 21300000
+    - 087f7b9f8900c40a5b1d34e14c049cd6: 21300000
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 59f54ee0e2ad04fd58ac87ab41462ec1, type: 3}
+  - {fileID: 21300000, guid: 49b656f08247a45a090728be5f256e25, type: 3}
+  - {fileID: 21300000, guid: 3cd51dd1799824a7695df3daa9a8805c, type: 3}
+  - {fileID: 21300000, guid: 6b27a53239b274a72ad2175c60269281, type: 3}
+  - {fileID: 21300000, guid: d0282ac2dff0ab4459bdefc13e09e916, type: 3}
+  - {fileID: 21300000, guid: ae2b7ff3ef06844fc9854cfe7b1b10ad, type: 3}
+  - {fileID: 21300000, guid: 32f70564739ce4b338361493fd7e53f4, type: 3}
+  - {fileID: 21300000, guid: b02caed49f77549d68353cfcd2234daf, type: 3}
+  - {fileID: 21300000, guid: d69eea352a05343de8f51cb6f66b7501, type: 3}
+  - {fileID: 21300000, guid: a508fa5583c824dd78ef0a4816408a73, type: 3}
+  - {fileID: 21300000, guid: 2d1b75c53af17432a99d4832de6bf665, type: 3}
+  - {fileID: 21300000, guid: adf823d50b7a343eb85d90d72e71255e, type: 3}
+  - {fileID: 21300000, guid: db3a71f534acf4c4086c40531b2b4c5f, type: 3}
+  - {fileID: 21300000, guid: 14c084a6418c74f758ee93b533195965, type: 3}
+  - {fileID: 21300000, guid: 03f44f379884741bcbc6be63e1b1c9fb, type: 3}
+  - {fileID: 21300000, guid: e36ce877600bc4c95b947c24d30bcadd, type: 3}
+  - {fileID: 21300000, guid: 585301c8b46b14032bb0814cf4e161ea, type: 3}
+  - {fileID: 21300000, guid: 257535799f80b4693a4c361faba5aa09, type: 3}
+  - {fileID: 21300000, guid: 911ac4e9a6fdd6e408c8078d409c6248, type: 3}
+  - {fileID: 21300000, guid: f3e0129a36f2c4f24ad6d69982ed2b4c, type: 3}
+  - {fileID: 21300000, guid: 26c5363b93a9e7d4abce166fc819209c, type: 3}
+  - {fileID: 21300000, guid: a3121c7c6dddd46008edd91dd912965b, type: 3}
+  - {fileID: 21300000, guid: a1e4b5bc51b80445fb7a5aef805c1dfe, type: 3}
+  - {fileID: 21300000, guid: 443b51ecb6cdf4e7ba7790f534ddc001, type: 3}
+  - {fileID: 21300000, guid: 5169ccecc02f44701996183b564d44f5, type: 3}
+  - {fileID: 21300000, guid: dfc8586df172d464e95feb9ca1f8a2f1, type: 3}
+  - {fileID: 21300000, guid: f137091e992a84beb9749cbb61469d7f, type: 3}
+  - {fileID: 21300000, guid: 8601463e54c964e978d8c7855ba3c1ed, type: 3}
+  - {fileID: 21300000, guid: e19d7fbe86dd549b78397eb49b791463, type: 3}
+  - {fileID: 21300000, guid: 03d80f0f8a6814d90b18daa7cc82d5a5, type: 3}
+  - {fileID: 21300000, guid: 557f116f1cb8d49b7987812bcf480a1e, type: 3}
+  - {fileID: 21300000, guid: d4f2528fff10ac743900483c37de282a, type: 3}
+  - {fileID: 21300000, guid: 98f0688fb90e84c9d9de891e4530a86b, type: 3}
+  - {fileID: 21300000, guid: 087f7b9f8900c40a5b1d34e14c049cd6, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Battle_TimerInfo_Frame2
+  - Slider23_Frame
+  - ListFrame05_White
+  - Label_Tag01_Color_Green
+  - purple
+  - Icon_WhiteIcon_Lock
+  - Slider22_White_Icon1
+  - ItemFrame01_Frame_d1
+  - ItemFrame01_Frame_d2
+  - Battle_TimerInfo_Frame1
+  - ItemFrame01_Icon
+  - Slider20_Fill
+  - Battle_TimerInfo_Icon
+  - ListFrame09_Navy
+  - Slider22_White_Fill
+  - Battle_TimerInfo_Frame3
+  - Slider22_White_Icon2
+  - BasicFrame_RectangleSlant01 - Copy
+  - Yellow
+  - Slider22_White_Icon3
+  - Green
+  - ListFrame05
+  - Slider13_White_Frame
+  - Notify_Point_Red
+  - Slider22_White_Frame
+  - Slider22_White_FillArea
+  - TableFrame10
+  - ListFrame05_Green
+  - ItemFrame01_Frame_n_Red2
+  - ItemFrame01_Frame_n_Blue1
+  - ListFrame05_Sky
+  - Red
+  - Label_Tag01_White
+  - BasicFrame_RectangleSlant01
+  m_RenderDataMap: {}
+  m_Tag: UIButton
+  m_IsVariant: 0

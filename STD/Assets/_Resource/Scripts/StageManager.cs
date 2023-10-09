@@ -17,7 +17,7 @@ public class StageManager : MonoBehaviour
     public int smBossCheck; // 0 x / 1 o 
     public int smMonsterTotalCount;
     public int smMonsterCount;
-    public int[] smSpawnMonster = new int[5];
+    public int smSpawnMonster;
     public int smWeightI;
     public int smWeightII;
     public int smWeightIII;
@@ -55,7 +55,7 @@ public class StageManager : MonoBehaviour
         if (smInstance == null)
         {
             smInstance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -103,7 +103,7 @@ public class StageManager : MonoBehaviour
         {
             smBossUI.SetActive(true);
             int spawnpoint = Random.Range(0, 4);
-            GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
+            GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
             monsterR.GetComponent<Monster>().mobHp = smMonsterHp;
             monsterR.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
             monsterR.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
@@ -193,7 +193,7 @@ public class StageManager : MonoBehaviour
             if (val[0] != 0)
             {
                 int spawnpoint = Random.Range(0, 4);
-                GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
+                GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterR.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterR.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterR.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
@@ -207,7 +207,7 @@ public class StageManager : MonoBehaviour
             if (val[1] != 0)
             {
                 int spawnpoint = Random.Range(0, 4);
-                GameObject monsterG = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
+                GameObject monsterG = Instantiate(smMonsterList[smSpawnMonster], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterG.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterG.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterG.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
@@ -221,7 +221,7 @@ public class StageManager : MonoBehaviour
             if (val[2] != 0)
             {
                 int spawnpoint = Random.Range(0, 4);
-                GameObject monsterB = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
+                GameObject monsterB = Instantiate(smMonsterList[smSpawnMonster], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterB.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterB.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterB.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
@@ -235,7 +235,7 @@ public class StageManager : MonoBehaviour
             if (val[3] != 0)
             {
                 int spawnpoint = Random.Range(0, 4);
-                GameObject monsterO = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
+                GameObject monsterO = Instantiate(smMonsterList[smSpawnMonster], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterO.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterO.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterO.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
@@ -249,7 +249,7 @@ public class StageManager : MonoBehaviour
             if (val[4] != 0)
             {
                 int spawnpoint = Random.Range(0, 4);
-                GameObject monsterP = Instantiate(smMonsterList[smSpawnMonster[0]], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
+                GameObject monsterP = Instantiate(smMonsterList[smSpawnMonster], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
                 monsterP.GetComponent<Monster>().mobHp = smMonsterHp;
                 monsterP.GetComponent<Monster>().mobSpeed = smMonsterSpeed;
                 monsterP.GetComponent<Monster>().mobIdentityIndex = smIdentityIndex;
