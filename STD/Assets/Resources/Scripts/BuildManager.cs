@@ -35,17 +35,7 @@ public class BuildManager : MonoBehaviour
             TowerCountUpdate();
         }
     }
-    public void TowerUIOnOff() // 타워 구매 UI 제어
-    {
-        if (bmTowerUI.activeSelf)
-        {
-            bmTowerUI.SetActive(false);
-        }
-        else if (!bmTowerUI.activeSelf)
-        {
-            bmTowerUI.SetActive(true);
-        }
-    }
+
 
     public void BuildTowerNormal() // 노말 타워 빌드
     {

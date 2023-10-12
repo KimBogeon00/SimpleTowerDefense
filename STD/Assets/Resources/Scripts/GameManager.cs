@@ -35,8 +35,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject gmTowerUIMananger;
     [SerializeField] GameObject gmLastNode;
     [SerializeField] GameObject gmNodeBuyUI; // 노드 구매 UI
-    [SerializeField] GameObject gmInfoMessageRed;
-    [SerializeField] GameObject gmInfoMessageBlue;
+    [SerializeField] GameObject[] gmInfoMessage;
+    [SerializeField] GameObject gmTextCreatePoint;
+
     GameObject gmCanvas;
 
     /// <summary> 노드 선택 이미지를 가로로 눕히기 위한 변수. </summary>
@@ -338,26 +339,79 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    /// <summary> 
+    /// 설명창을 만드는 함수.
+    ///</summary>
+    /// <param name="color"> 색상 입력 / 0 == red / 1 == blue / 2 == gray </param>
+    /// <param name="point"> 생성 위치 </param>
+    /// <param name="msg"> 출력할 메세지 </param>
     public void InfoMessage(int color, GameObject point, string msg)
     {
+        Debug.Log("ㅇㅇㅇㅇ");
         GameObject testText;
-        if (color == 0)
+        Vector2 spawnPoint;
+        if (color == 2)
         {
-            testText = Instantiate(gmInfoMessageRed, point.transform.position, Quaternion.identity) as GameObject;
+            spawnPoint = point.transform.position;
         }
         else
         {
-            testText = Instantiate(gmInfoMessageBlue, point.transform.position, Quaternion.identity) as GameObject;
+            spawnPoint = gmTextCreatePoint.transform.position;
         }
+
+        testText = Instantiate(gmInfoMessage[color], spawnPoint + (Random.insideUnitCircle.normalized * 30.0f), Quaternion.identity) as GameObject;
 
         testText.transform.SetParent(gmCanvas.transform);
         testText.GetComponentInChildren<TextMeshProUGUI>().text = "" + msg;
-        Destroy(testText.gameObject, 1.5f);
-        testText.transform.DOMoveY(-15f, 5f, false).SetEase(Ease.OutQuad).OnComplete(() =>
+
+        if (color == 2)
+        {
+            Destroy(testText.gameObject, 1f);
+            Sequence typeB = DOTween.Sequence().SetAutoKill(false)
+            .Append(testText.transform.DOLocalMoveX(1000f, 10f, false).SetEase(Ease.OutQuad))
+            .Join(testText.GetComponentInChildren<TextMeshProUGUI>().DOFade(0, 5f)).SetEase(Ease.OutQuad)
+            .OnComplete(() =>
         {
             Destroy(testText.gameObject);
         });
+
+        }
+        else
+        {
+            Destroy(testText.gameObject, 1.5f);
+            Sequence typeA = DOTween.Sequence().SetAutoKill(false)
+            .Append(testText.transform.DOMoveY(gmTextCreatePoint.transform.position.y, 5f, false).SetEase(Ease.OutQuad))
+            .Join(testText.GetComponentInChildren<TextMeshProUGUI>().DOFade(0.5f, 5f))
+            .OnComplete(() =>
+        {
+            Destroy(testText.gameObject);
+        });
+        }
+
+    }
+
+    /// <summary> 
+    /// 골드를 사용할때, 골드를 체크하기위한 함수.
+    ///</summary>
+    /// <param name="needgold"> 필요한 골드량 입력. </param>
+    public bool BuyCheckGold(int needgold)
+    {
+        if (gmGold >= needgold)
+        {
+            gmGold -= needgold;
+            Debug.Log("ㅇㅇㅇㅇ");
+            InfoMessage(2, GameUIManager.gumInstance.gumPlayerGold.gameObject, "- " + needgold);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void AddGold(int addgold)
+    {
+        gmGold += addgold;
+        InfoMessage(2, GameUIManager.gumInstance.gumPlayerGold.gameObject, "+ " + addgold);
     }
     IEnumerator GmCreateNode(int min, float wait)
     {

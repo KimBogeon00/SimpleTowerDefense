@@ -171,11 +171,11 @@ MonoBehaviour:
   twrType: 1
   twrValueInt: 
   twrAtk: 0.1
-  twrCurAtk: 0.1
-  twrAtkCoolTime: 1
-  twrCurAtkCoolTime: 1
-  twrRange: 15
-  twrCurRange: 15
+  twrCurAtk: 0.2
+  twrAtkCoolTime: 0.5
+  twrCurAtkCoolTime: 0.5
+  twrRange: 7.5
+  twrCurRange: 7.5
   twrCurExp: 0
   twrMaxExp: 100
   twrNeedExp:
@@ -209,6 +209,7 @@ MonoBehaviour:
   - {fileID: 8758091774695828059, guid: 41b894a22d1e80e4cb029cb8e783f302, type: 3}
   - {fileID: 0}
   twrRangeEffect: {fileID: 8498626744014938887}
+  twrBulletParent: {fileID: 0}
   twrValueFStr: []
   twrValueIStr: []
   twrLayermask:

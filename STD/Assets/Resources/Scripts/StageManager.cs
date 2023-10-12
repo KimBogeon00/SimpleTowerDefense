@@ -11,8 +11,6 @@ public class StageManager : MonoBehaviour
 {
     public static StageManager smInstance;
     [Header(" [ Int ]")]
-
-    [SerializeField] int[] smMonsterColorCount = new int[5];
     public int smCurStageIndex;
     public int smBossCheck; // 0 x / 1 o 
     public int smMonsterTotalCount;
@@ -23,7 +21,7 @@ public class StageManager : MonoBehaviour
     public int smWeightIII;
 
     public int smMonsterKillCount;
-
+    [SerializeField] int[] smMonsterColorCount = new int[5];
 
     [Space(20f)]
     [Header(" [ Float ]")]
@@ -101,7 +99,7 @@ public class StageManager : MonoBehaviour
         smMonsterTotalCount = 0;
         if (smBossCheck == 1)
         {
-            smBossUI.SetActive(true);
+            GameUIManager.gumInstance.BossUIOn();
             int spawnpoint = Random.Range(0, 4);
             GameObject monsterR = Instantiate(smMonsterList[smSpawnMonster], smSpawnPoint[spawnpoint].transform.position, Quaternion.identity) as GameObject;
             monsterR.GetComponent<Monster>().mobHp = smMonsterHp;
@@ -117,7 +115,7 @@ public class StageManager : MonoBehaviour
         }
         else if (smBossCheck == 0)
         {
-            smBossUI.SetActive(false);
+            GameUIManager.gumInstance.BossUIOff();
             for (int i = 0; i < 5; i++)
             {
                 smMonsterColorCount[i] = ((int)((MonsterStudy.msInstance.msColorWeight[i] * 0.01) * smMonsterCount));

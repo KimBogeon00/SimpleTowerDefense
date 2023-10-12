@@ -11,8 +11,6 @@ public class TowerUI : MonoBehaviour
     public GameObject tuTargetNode;
     public GameObject tuTargetTower;
 
-    int tuTowerLevel;
-    int tuTowerAbility1;
     bool[] tuTowerAbilityCheck = new bool[5];
     float tuTowerCurExp;
     float tuTowerMaxExp;
@@ -28,21 +26,18 @@ public class TowerUI : MonoBehaviour
 
     [SerializeField] string[] tuTowerInfoText;
 
-    public GameObject tuTowerLevelUI;
-    public GameObject tuTowerExpUI;
-    public GameObject[] tuTowerInfoUI = new GameObject[8];
-    public GameObject[] tuTowerInfoTextUI = new GameObject[8];
-    public GameObject[] tuTowerInfoValueUI = new GameObject[8];
-    public GameObject tuTowerUpgradeLevelUI;
-    public Slider tuTowerExpSlider;
-    public Slider tuTowerUpgradeLevelSlider;
-
-    public GameObject tuTowerUpgradeUI;
-    public GameObject tuTowerSellUI;
+    [SerializeField] GameObject tuTowerLevelUI;
+    [SerializeField] GameObject tuTowerExpUI;
+    [SerializeField] GameObject[] tuTowerInfoUI = new GameObject[8];
+    [SerializeField] GameObject[] tuTowerInfoTextUI = new GameObject[8];
+    [SerializeField] GameObject[] tuTowerInfoValueUI = new GameObject[8];
+    //public GameObject tuTowerUpgradeLevelUI;
+    [SerializeField] Slider tuTowerExpSlider;
+    //public Slider tuTowerUpgradeLevelSlider;
     // Start is called before the first frame update
     void Start()
     {
-        tuTowerUpgradeLevelSlider.maxValue = 10;
+
     }
 
     // Update is called once per frame
@@ -52,8 +47,8 @@ public class TowerUI : MonoBehaviour
         {
             TUTowerDataUpdate();
 
-            tuTowerLevelUI.GetComponent<TextMeshProUGUI>().text = "LV <size=170%> " + tuTowerLevel;
-            tuTowerExpUI.GetComponent<TextMeshProUGUI>().text = tuTowerCurExp + "<#557190> / " + tuTowerMaxExp;
+            tuTowerLevelUI.GetComponent<TextMeshProUGUI>().text = "LV <size=170%> " + tuTowerUpgradeLevel;
+            tuTowerExpUI.GetComponent<TextMeshProUGUI>().text = tuTowerUpgradeLevel + "<#557190> / " + 100;
             for (int i = 0; i < tuTowerInfoTextUI.Length; i++)
             {
                 tuTowerInfoTextUI[i].GetComponent<TextMeshProUGUI>().text = tuTowerInfoText[i];
@@ -61,17 +56,10 @@ public class TowerUI : MonoBehaviour
             tuTowerInfoValueUI[0].GetComponent<TextMeshProUGUI>().text = "" + tuTowerAtk;
             tuTowerInfoValueUI[1].GetComponent<TextMeshProUGUI>().text = "" + tuTowerRange;
             tuTowerInfoValueUI[2].GetComponent<TextMeshProUGUI>().text = tuTowerAtkSpeed + " / 1 sec";
+            tuTowerExpSlider.value = tuTowerUpgradeLevel;
 
-
-            tuTowerUpgradeLevelUI.GetComponent<TextMeshProUGUI>().text = tuTowerUpgradeLevel + " LV";
-            tuTowerUpgradeUI.GetComponent<TextMeshProUGUI>().text = "" + tuTowerUpgradeGold;
-            tuTowerSellUI.GetComponent<TextMeshProUGUI>().text = "" + tuTowerSellGold;
-
-
-
-
-            tuTowerExpSlider.value = tuTowerCurExp;
-            tuTowerUpgradeLevelSlider.value = tuTowerUpgradeLevel;
+            //tuTowerUpgradeLevelUI.GetComponent<TextMeshProUGUI>().text = tuTowerUpgradeLevel + " LV";
+            //tuTowerUpgradeLevelSlider.value = tuTowerUpgradeLevel;
         }
 
     }
@@ -102,10 +90,6 @@ public class TowerUI : MonoBehaviour
 
         //tuTowerLevel = tuTargetTower.GetComponent<Tower>().twrLevel;
         tuTowerUpgradeLevel = tuTargetTower.GetComponent<Tower>().twrUpgradeLevel;
-        tuTowerCurExp = tuTargetTower.GetComponent<Tower>().twrCurExp;
-        tuTowerMaxExp = tuTargetTower.GetComponent<Tower>().twrMaxExp;
-        tuTowerUpgradeGold = tuTargetTower.GetComponent<Tower>().twrUpgradeGold;
-        tuTowerSellGold = tuTargetTower.GetComponent<Tower>().twrSellGold;
 
         for (int tu2 = 0; tu2 < 4; tu2++)
         {
@@ -160,16 +144,23 @@ public class TowerUI : MonoBehaviour
         tuTowerExpSlider.maxValue = tuTowerMaxExp;
     }
 
-    public void TUTowerUpgrade()
-    {
-        tuTargetTower.GetComponent<Tower>().TowerUpdate();
-        TUTowerDataUpdate();
-    }
-
+    /// <summary> 타워 색상 변경 </summary>
     public void TUColorChange()
     {
-        tuTargetTower.GetComponent<Tower>().twrColor = Random.Range(0, 5);
-        tuTargetTower.GetComponent<Tower>().TowerUpdate();
+        if (GameManager.gmInstance.BuyCheckGold(1))
+        {
+            tuTargetTower.GetComponent<Tower>().twrColor = Random.Range(0, 5);
+            tuTargetTower.GetComponent<Tower>().TowerUpdate();
+        }
+
+    }
+
+    /// <summary> 타워 판매 </summary>
+    public void TUTowerSell()
+    {
+        GameManager.gmInstance.gmGold += 10;
+        tuUI.SetActive(false);
+        Destroy(tuTargetTower.gameObject);
     }
 
 

@@ -7,6 +7,9 @@ public class Tower : MonoBehaviour
     [Header(" [ Int ]")]
     //public int twrLevel = 1; // 타워 레벨
     public int twrUpgradeLevel = 1; // 타워 업그레이드 레벨
+    /// <summary> 
+    /// <para> 0 Red / 1 Green / 2 Blue / 3 Oreange / 4 Purple </para>
+    ///</summary>
     public int twrColor;
     public int twrType; // 0 노말 타워 , 1 레피드 타워 , 2 스나이퍼 타워
     /// <summary> 
@@ -36,12 +39,6 @@ public class Tower : MonoBehaviour
     public float twrCurAtkCoolTime; // 타워 공격 쿨타임 현재값.
     public float twrRange; // 타워 사거리 기본값.
     public float twrCurRange; // 타워 사거리 현재값.
-    public float twrCurExp; // 타워 경험치 현재값.
-    public float twrMaxExp; // 타워 해당 레벨 경험치 최대값
-    public float[] twrNeedExp = new float[11]; // 타워 레벨 경험치 요구량.
-    public float twrBuyGold; // 타워 구입 비용
-    public float twrUpgradeGold; // 타워 업그레이드 비용
-    public float twrSellGold; // 타워 판매 비용
 
     /// <summary> 
     /// <para> [ 2 스나이퍼 타워 ] index 0 - : 크리티컬 확률, </para>
@@ -79,27 +76,24 @@ public class Tower : MonoBehaviour
     void Start()
     {
         twrBulletParent = GameObject.Find("BulletParent");
-        for (int i = 1; i < 11; i++)
-        {
-            twrNeedExp[i] = i * 100;
-        }
+
         twrColor = Random.Range(0, 5);
-        if (twrType == 1)
-        {
-            twrRange = twrRange * 0.75f;
-            twrAtk = twrAtk * 0.1f;
-            twrAtkCoolTime = twrAtkCoolTime * 0.5f;
-        }
-        else if (twrType == 2)
-        {
-            twrRange = twrRange * 1.5f;
-            twrAtk = twrAtk * 1.75f;
-            twrAtkCoolTime = twrAtkCoolTime * 1.5f;
-        }
+        // if (twrType == 1)
+        // {
+        //     twrRange = twrRange * 0.75f;
+        //     twrAtk = twrAtk * 0.1f;
+        //     twrAtkCoolTime = twrAtkCoolTime * 0.5f;
+        // }
+        // else if (twrType == 2)
+        // {
+        //     twrRange = twrRange * 1.5f;
+        //     twrAtk = twrAtk * 1.75f;
+        //     twrAtkCoolTime = twrAtkCoolTime * 1.5f;
+        // }
         twrCurRange = twrRange;
         twrCurAtkCoolTime = twrAtkCoolTime;
         twrCurAtk = twrAtk;
-        twrMaxExp = twrNeedExp[1];
+
         twrAtkCoolTimeCheck = false;
         TowerUpdate();
         InvokeRepeating("SearchMonster", 0f, 0.2f);
@@ -196,7 +190,7 @@ public class Tower : MonoBehaviour
             case 0:
                 if (twrCloseTarget != null)
                 {
-                    GameObject twrbullet0_0 = Instantiate(twrBullet[Random.Range(0, 3)], twrAtkPoint[0].transform.position, Quaternion.identity) as GameObject;
+                    GameObject twrbullet0_0 = Instantiate(twrBullet[0], twrAtkPoint[0].transform.position, Quaternion.identity) as GameObject;
                     twrbullet0_0.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
                     twrbullet0_0.GetComponent<Bullet>().bulletAtk = twrCurAtk;
                     twrbullet0_0.GetComponent<Bullet>().identity = twrIdentity;
@@ -206,7 +200,7 @@ public class Tower : MonoBehaviour
                 if (twrValueInt[0] > Random.Range(0, 101) && twrCloseTarget != null)
                 {
                     Debug.Log("더블샷 !!");
-                    GameObject twrbullet0_1 = Instantiate(twrBullet[Random.Range(0, 3)], twrAtkPoint[1].transform.position, Quaternion.identity) as GameObject;
+                    GameObject twrbullet0_1 = Instantiate(twrBullet[1], twrAtkPoint[1].transform.position, Quaternion.identity) as GameObject;
                     twrbullet0_1.GetComponent<Bullet>().SetTargets(twrCloseTarget, twrCloseTarget.GetComponent<Monster>());
                     twrbullet0_1.GetComponent<Bullet>().bulletAtk = twrCurAtk;
                     twrbullet0_1.GetComponent<Bullet>().identity = twrIdentity;

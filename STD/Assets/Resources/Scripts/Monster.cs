@@ -125,7 +125,7 @@ public class Monster : MonoBehaviour
             StageManager.smInstance.smMonsterKillCount += 1;
             // mobAttacktoTower.GetComponent<Tower>().twrCurExp += mobExp;
             // Debug.Log(mobExp + " : " + mobAttacktoTower.GetComponent<Tower>().twrCurExp);
-            GameManager.gmInstance.gmGold += mobGold;
+            GameManager.gmInstance.AddGold(mobGold);
             MonsterStudy.msInstance.msMonsterDeadTime[mobColor] += mobDeadTime;
             MonsterStudy.msInstance.msMonsterDeadCount[mobColor] += 1;
             Destroy(this.gameObject);
